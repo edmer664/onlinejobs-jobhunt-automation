@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CandidateProfileConfiguration",
+  "description": "Formal validation schema for the open-source job search automation candidate profile.",
+  "type": "object",
+  "required": [
+    "candidate",
+    "role_categories",
+    "candidate_skills",
+    "potential_gaps",
+    "hard_mismatches",
+    "red_flags",
+    "verified_experience",
+    "logistics"
+  ],
+  "properties": {
+    "candidate": {
+      "type": "object",
+      "required": ["name", "display_name", "email", "phone", "location"],
+      "properties": {
+        "name": { "type": "string", "minLength": 2 },
+        "display_name": { "type": "string", "minLength": 2 },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string", "minLength": 7 },
+        "location": { "type": "string", "minLength": 2 },
+        "linkedin": { "type": "string" },
+        "portfolio_url": { "type": "string" },
+        "resume_url": { "type": "string" },
+        "degree": { "type": "string" },
+        "certifications": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "role_categories": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["title_keywords", "base_fit", "selling_point"],
+        "properties": {
+          "title_keywords": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "base_fit": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "selling_point": {
+            "type": "string",
+            "minLength": 5
+          }
+        }
+      }
+    },
+    "candidate_skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns", "weight"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2 },
+          "patterns": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          }
+        }
+      }
+    },
+    "potential_gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2 },
+          "patterns": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "hard_mismatches": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "red_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "patterns"],
+        "properties": {
+          "name": { "type": "string" },
+          "patterns": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "verified_experience": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role", "org", "period", "metrics"],
+        "properties": {
+          "role": { "type": "string" },
+          "org": { "type": "string" },
+          "period": { "type": "string" },
+          "metrics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "logistics": {
+      "type": "object",
+      "required": ["internet", "power", "availability"],
+      "properties": {
+        "internet": { "type": "string" },
+        "power": { "type": "string" },
+        "availability": { "type": "string" },
+        "hardware": { "type": "string" }
+      }
+    },
+    "anti_hallucination_rules": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

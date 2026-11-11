@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "onlinejobs-proposal-generator": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "skills/onlinejobs-proposal-generator/SKILL.md",
+      "version": "1.0.0"
+    }
+  }
+}

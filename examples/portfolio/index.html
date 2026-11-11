@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alex Taylor | Remote Admin, Recruitment &amp; Data Support</title>
+<meta name="description" content="Portfolio of Alex Taylor: virtual assistance, recruitment sourcing, data encoding and content production. BSIT graduate, Remote, Worldwide.">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 32px; }
+  .read { max-width: 680px; }
+
+  /* Top bar */
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(251,251,250,0.82); backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font: 400 1.35rem var(--serif); color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+  .nav { display: flex; gap: 26px; align-items: center; }
+  .nav a { text-decoration: none; font-size: 0.88rem; color: var(--muted); transition: color 150ms; }
+  .nav a:hover { color: var(--ink); }
+  .nav .btn { padding: 8px 14px; font-size: 0.85rem; color: var(--ink); }
+
+  section { padding: 128px 0; border-bottom: 1px solid var(--line); position: relative; }
+  section.band { background: var(--bone); }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 56px; flex-wrap: wrap; }
+  h2.serif { font-size: clamp(2.2rem, 4vw, 3.25rem); margin: 10px 0 0; }
+
+  /* Hero */
+  .hero { padding: 120px 0 112px; overflow: hidden; }
+  .hero .wrap { position: relative; z-index: 1; }
+  .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); margin: 28px 0 24px; }
+  .hero p.lead { font-size: 1.2rem; color: var(--text); max-width: 600px; margin: 0 0 36px; }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .avail { display: inline-flex; align-items: center; gap: 8px; }
+  .avail::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+
+  /* Metrics */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .metric { padding: 36px 32px; border-right: 1px solid var(--line); }
+  .metric:last-child { border-right: 0; }
+  .metric b { display: block; font: 400 3.6rem/1 var(--serif); color: var(--ink); letter-spacing: -0.03em; margin-bottom: 14px; }
+  .metric p { margin: 8px 0 0; font-size: 0.9rem; color: var(--muted); }
+
+  /* Bento */
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+  .bento > * { min-width: 0; }
+  .c7 { grid-column: span 7; } .c5 { grid-column: span 5; } .c4 { grid-column: span 4; } .c6 { grid-column: span 6; } .c12 { grid-column: span 12; }
+  .case { display: flex; flex-direction: column; gap: 18px; }
+  .case-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .case h3 { font: 400 2rem/1.1 var(--serif); letter-spacing: -0.02em; color: var(--ink); margin: 0; }
+  .case .ctx { color: var(--muted); font-size: 0.92rem; margin: -8px 0 0; }
+  .case ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .case li { padding-left: 22px; position: relative; font-size: 0.97rem; }
+  .case li::before { content: ""; position: absolute; left: 2px; top: 0.72em; width: 10px; height: 1px; background: var(--ink); }
+  .case .tools { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+  .outcome { border-top: 1px solid var(--line); padding-top: 16px; display: flex; gap: 12px; align-items: baseline; }
+  .outcome b { font: 400 1.9rem/1 var(--serif); color: var(--ink); }
+  .outcome span { font-size: 0.9rem; color: var(--muted); }
+  .note { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.04em; padding: 10px 14px; border-top: 1px solid var(--line); background: var(--bone); }
+  .sample-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, 150px); gap: 10px; }
+  .sample-tiles div { min-width: 0; border: 1px dashed #DCDAD5; border-radius: 8px; background: var(--bone); display: grid; place-items: center; text-align: center; padding: 10px; }
+  .sample-tiles div:nth-child(2) { grid-row: span 2; }
+
+  /* Toolkit */
+  .tk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .tk h3 { font: 600 1rem var(--sans); color: var(--ink); margin: 18px 0 10px; }
+  .tk p { margin: 0; font-size: 0.93rem; color: var(--muted); }
+
+  /* Certs */
+  .certs { border-top: 1px solid var(--line); }
+  .cert { display: grid; grid-template-columns: 140px 1fr auto; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .cert h3 { font: 400 1.5rem/1.2 var(--serif); color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+  .cert p { margin: 4px 0 0; color: var(--muted); font-size: 0.92rem; }
+
+  /* Timeline */
+  .tl { border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .row h3 { font: 400 1.6rem/1.2 var(--serif); color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+  .row p { margin: 4px 0 0; color: var(--muted); font-size: 0.95rem; }
+
+  /* Contact */
+  .contact h2 { font-size: clamp(2.6rem, 6vw, 4.5rem); margin: 18px 0 28px; }
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+  .contact-grid a { text-decoration: none; display: flex; flex-direction: column; gap: 14px; }
+  .contact-grid strong { font-weight: 500; color: var(--ink); word-break: break-word; }
+  footer { padding: 40px 0; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  /* Motion */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); transition-delay: calc(var(--i, 0) * 80ms); }
+    .reveal.in { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 860px) {
+    .nav a:not(.btn) { display: none; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .metric:nth-child(2) { border-right: 0; }
+    .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .bento > * { grid-column: span 12; }
+    .tk, .contact-grid { grid-template-columns: 1fr; }
+    .cert { grid-template-columns: 1fr; gap: 6px; }
+    .row { grid-template-columns: 1fr; gap: 6px; }
+    section { padding: 80px 0; }
+    .wrap { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4M18 14.8c1.8.8 3 2.5 3.5 5.2"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16"/><path d="M3 9.5h18M3 15h18M9.5 4v16"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10.5" width="16" height="10"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5M12 14.5v2.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15"/><path d="M10 9v6l5-3z"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24"><rect x="3" y="3.5" width="7" height="5"/><rect x="14" y="15.5" width="7" height="5"/><rect x="14" y="3.5" width="7" height="5"/><path d="M10 6h4M6.5 8.5V18H14"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4.5h16v11H10l-4.5 4v-4H4z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l1-4.5L15.5 5l3.5 3.5L8.5 19z"/><path d="M13 7.5l3.5 3.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></symbol>
+  <symbol id="i-in" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M8 10.5V17M8 7.2v.1M12 17v-6.5M12 13.5c0-2 1.3-3 2.8-3s2.2 1 2.2 3V17"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M5.5 3h9l4 4v14h-13z"/><path d="M14.5 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Alex Taylor</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#toolkit">Toolkit</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#experience">Experience</a>
+      <a class="btn ghost" href="deck.html">View as slides</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="texture"></div>
+    <div class="wrap">
+      <div class="monogram reveal" aria-hidden="true">AT</div>
+      <h1 id="hero-title" class="serif reveal" style="--i:1">Admin, recruitment &amp; data support <em>you can hand things to.</em></h1>
+      <p class="lead reveal" style="--i:2">I'm Alex, a BSIT graduate and freelance personal administrative assistant. I keep calendars clear, candidate pipelines moving and records accurate, and I treat confidential information carefully.</p>
+      <div class="hero-meta reveal" style="--i:3">
+        <span class="tag green avail">Open to full-time remote</span>
+        <span class="tag plain">Remote, Worldwide</span>
+        <span class="tag plain">Flexible time zone</span>
+        <span class="tag plain">English · Filipino</span>
+      </div>
+      <div class="cta reveal" style="--i:4">
+        <a class="btn primary" href="mailto:alex@example.com">Email me <svg width="16" height="16" style="stroke:#fff;stroke-width:2;fill:none"><use href="#i-arrow"/></svg></a>
+        <a class="btn ghost" href="https://docs.google.com/document/d/e/sample-resume-doc/pub" target="_blank" rel="noopener">Live resume</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section class="band" aria-labelledby="numbers-title" style="padding:96px 0">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="label">By the numbers</span><h2 id="numbers-title" class="serif">What the work looks like.</h2></div></div>
+      <div class="metrics">
+        <div class="metric reveal"><b>~30</b><span class="label">Job posts / day</span><p>Published across hiring groups</p></div>
+        <div class="metric reveal" style="--i:1"><b>30</b><span class="label">Recruits</span><p>Brought in since July 2026</p></div>
+        <div class="metric reveal" style="--i:2"><b>200+</b><span class="label">Member records</span><p>Kept in a Google Workspace database</p></div>
+        <div class="metric reveal" style="--i:3"><b>4</b><span class="label">Certifications</span><p>Certiport: MOS, PMI, IT Specialist, IC3</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="label">Selected work · 05 cases</span><h2 id="work-title" class="serif">Process and outcomes.</h2></div>
+        <span class="tag red">Client work under NDA · process only</span>
+      </div>
+
+      <div class="bento">
+        <!-- Case 01 -->
+        <article class="card case c7 reveal">
+          <div class="case-top"><span class="label">Case 01</span><span class="tag blue">Recruitment</span></div>
+          <div style="display:flex;gap:16px;align-items:center"><div class="ico blue"><svg><use href="#i-users"/></svg></div><h3>Recruitment pipeline operations</h3></div>
+          <p class="ctx">Freelance Personal Administrative Assistant to an Agency Manager, Financial Services Agency · July 2026 to present</p>
+          <ul>
+            <li>Publish around 30 targeted job postings a day across specialized hiring groups.</li>
+            <li>Source and engage Bancassurance Agent and Insurance &amp; Investment Consultant candidates through LinkedIn Sales Navigator.</li>
+            <li>Track every applicant's status and sales data in Google Sheets.</li>
+            <li>Handle inquiries on Messenger and follow up with recruits on Telegram through each documentation step.</li>
+          </ul>
+          <div class="outcome"><b>30</b><span>recruits brought in since July 2026</span></div>
+          <div class="tools"><span class="tag plain">Sales Navigator</span><span class="tag plain">Google Sheets</span><span class="tag plain">Messenger</span><span class="tag plain">Telegram</span></div>
+        </article>
+
+        <!-- Tracker mock -->
+        <div class="window c5 reveal" style="--i:1;align-self:start">
+          <div class="window-bar"><i></i><i></i><i></i><span class="label">Recruitment tracker</span></div>
+          <div style="overflow-x:auto">
+          <table class="tracker">
+            <thead><tr><th>Candidate</th><th>Source</th><th>Stage</th></tr></thead>
+            <tbody>
+              <tr><td>Applicant 014</td><td>Sales Nav</td><td><span class="tag blue">Screening</span></td></tr>
+              <tr><td>Applicant 015</td><td>FB group</td><td><span class="tag yellow">Interview</span></td></tr>
+              <tr><td>Applicant 016</td><td>Referral</td><td><span class="tag green">Onboarded</span></td></tr>
+              <tr><td>Applicant 017</td><td>Sales Nav</td><td><span class="tag plain">Docs pending</span></td></tr>
+              <tr><td>Applicant 018</td><td>FB group</td><td><span class="tag blue">Screening</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="note">Illustrative sample, not client data</div>
+        </div>
+
+        <!-- Case 02 -->
+        <article class="card case c5 reveal">
+          <div class="case-top"><span class="label">Case 02</span><span class="tag red">Confidential</span></div>
+          <div style="display:flex;gap:16px;align-items:center"><div class="ico red"><svg><use href="#i-lock"/></svg></div><h3>Confidential data encoding</h3></div>
+          <p class="ctx">Freelance Data Encoder for an independent accountant · Jul to Nov 2025</p>
+          <ul>
+            <li>Entered bookkeeping and financial system records accurately.</li>
+            <li>Reviewed, cross-checked and categorized complex transactions to stop errors before they reached the books.</li>
+            <li>Handled sensitive fiscal records with strict discretion.</li>
+          </ul>
+          <div class="tools"><span class="tag plain">Spreadsheets</span><span class="tag plain">Accounting systems</span></div>
+        </article>
+
+        <!-- Case 03 -->
+        <article class="card case c7 reveal" style="--i:1">
+          <div class="case-top"><span class="label">Case 03</span><span class="tag green">Data &amp; Records</span></div>
+          <div style="display:flex;gap:16px;align-items:center"><div class="ico green"><svg><use href="#i-table"/></svg></div><h3>A 200+ member records system</h3></div>
+          <p class="ctx">Student Tech Society Membership &amp; Election Committee, State University · 2023 to 2026</p>
+          <ul>
+            <li>Standardized and maintained a central Google Workspace database for personal records, election status and compliance.</li>
+            <li>Sent official notices and scheduled correspondence ahead of strict enrollment and election deadlines.</li>
+            <li>Kept member data in line with data privacy rules.</li>
+          </ul>
+          <div class="outcome"><b>200+</b><span>active members tracked</span></div>
+          <div class="tools"><span class="tag plain">Google Sheets</span><span class="tag plain">Forms</span><span class="tag plain">Drive</span><span class="tag plain">Gmail</span></div>
+        </article>
+
+        <!-- Case 04 -->
+        <article class="card case c7 reveal">
+          <div class="case-top"><span class="label">Case 04</span><span class="tag yellow">Content &amp; Media</span></div>
+          <div style="display:flex;gap:16px;align-items:center"><div class="ico yellow"><svg><use href="#i-play"/></svg></div><h3>Content &amp; media production</h3></div>
+          <p class="ctx">Recruitment branding (2026 to present) · Student Tech Society Media &amp; Publications (2024 to 2025)</p>
+          <ul>
+            <li>Make posters, flyers, short-form reels and daily Stories for Facebook and LinkedIn to grow hiring reach.</li>
+            <li>Write recruitment captions and copy.</li>
+            <li>Scripted, shot and edited promotional videos and pubmats, and covered live university events as photographer and videographer.</li>
+          </ul>
+          <div class="tools"><span class="tag plain">Canva</span><span class="tag plain">CapCut</span><span class="tag plain">Facebook</span><span class="tag plain">LinkedIn</span></div>
+        </article>
+
+        <div class="card c5 reveal" style="--i:1;padding:24px">
+          <span class="label" style="display:block;margin-bottom:14px">Sample reel</span>
+          <div class="sample-tiles">
+            <div><span class="label">Poster</span></div>
+            <div><span class="label">Reel 9:16</span></div>
+            <div><span class="label">Story</span></div>
+            <div><span class="label">Pubmat</span></div>
+            <div><span class="label">Carousel</span></div>
+          </div>
+          <p class="label" style="margin:14px 0 0;text-transform:none;letter-spacing:.02em">Personal, unbranded samples coming soon</p>
+        </div>
+
+        <!-- Case 05 -->
+        <article class="card case c12 reveal">
+          <div class="case-top"><span class="label">Case 05</span><span class="tag plain">Systems &amp; Documentation</span></div>
+          <div style="display:flex;gap:16px;align-items:center"><div class="ico plain"><svg><use href="#i-flow"/></svg></div><h3>CampusCart: a university peer marketplace with SMS notification</h3></div>
+          <p class="ctx">BSIT Capstone · System Analyst &amp; Technical Documentation Lead</p>
+          <div class="bento" style="gap:24px">
+            <ul class="c6" style="grid-column:span 6">
+              <li>Led functional requirements gathering and end-to-end system analysis.</li>
+              <li>Mapped user workflows for a campus peer-to-peer ordering platform.</li>
+            </ul>
+            <ul class="c6" style="grid-column:span 6">
+              <li>Wrote the full technical specification documents.</li>
+              <li>Documented the automated SMS order-alert flow.</li>
+            </ul>
+          </div>
+          <div class="tools"><span class="tag plain">Requirements</span><span class="tag plain">Process mapping</span><span class="tag plain">Tech writing</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLKIT -->
+  <section id="toolkit" class="band" aria-labelledby="toolkit-title">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="label">Toolkit</span><h2 id="toolkit-title" class="serif">What I work with.</h2></div></div>
+      <div class="tk">
+        <div class="card reveal"><div class="ico plain"><svg><use href="#i-cal"/></svg></div><h3>Executive assistance</h3><p>Calendar and diary management, meeting coordination, email drafting, file organization.</p></div>
+        <div class="card reveal" style="--i:1"><div class="ico blue"><svg><use href="#i-users"/></svg></div><h3>Recruitment &amp; sourcing</h3><p>LinkedIn Sales Navigator, Boolean search, job board posting, pipeline tracking, follow-ups.</p></div>
+        <div class="card reveal" style="--i:2"><div class="ico green"><svg><use href="#i-table"/></svg></div><h3>Data &amp; records</h3><p>Accurate encoding, transaction categorization, database upkeep. Microsoft Excel and Google Sheets.</p></div>
+        <div class="card reveal"><div class="ico yellow"><svg><use href="#i-pen"/></svg></div><h3>Content &amp; marketing</h3><p>Canva graphics, CapCut reels and Stories, recruitment copy, Facebook and LinkedIn pages.</p></div>
+        <div class="card reveal" style="--i:1"><div class="ico plain"><svg><use href="#i-chat"/></svg></div><h3>Communication</h3><p>Gmail, Messenger, Telegram. Clear written English and Filipino.</p></div>
+        <div class="card reveal" style="--i:2"><div class="ico plain"><svg><use href="#i-doc"/></svg></div><h3>Office suites</h3><p>Microsoft 365 (Word, Excel, PowerPoint) and Google Workspace (Docs, Sheets, Drive, Forms, Calendar).</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" aria-labelledby="cert-title">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="label">Certifications · Certiport</span><h2 id="cert-title" class="serif">Verified credentials.</h2></div></div>
+      <div class="certs">
+        <div class="cert reveal"><span class="label">Oct 2025</span><div><h3>Microsoft Office Specialist</h3><p>Microsoft 365 Apps: Word, Excel, PowerPoint</p></div><span class="tag green">MOS</span></div>
+        <div class="cert reveal"><span class="label">Dec 2024</span><div><h3>PMI Project Management Ready</h3><p>Project lifecycles, resource tracking, risk and governance</p></div><span class="tag blue">PMI</span></div>
+        <div class="cert reveal"><span class="label">May 2024</span><div><h3>IC3 Digital Literacy · GS6 Level 1</h3><p>Computing concepts, digital communication, online ethics</p></div><span class="tag plain">IC3</span></div>
+        <div class="cert reveal"><span class="label">Apr 2024</span><div><h3>IT Specialist: Device Configuration &amp; Management</h3><p>OS setup, device configuration, system policies, endpoint security</p></div><span class="tag plain">ITS</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="band" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="label">Experience &amp; education</span><h2 id="exp-title" class="serif">Where I've done it.</h2></div></div>
+      <div class="tl">
+        <div class="row reveal"><span class="label">2026 · Present</span><div><h3>Personal Administrative Assistant</h3><p>Freelance · Agency Manager, Financial Services Agency</p></div></div>
+        <div class="row reveal"><span class="label">Jul · Nov 2025</span><div><h3>Data Encoder</h3><p>Freelance · Independent accountant</p></div></div>
+        <div class="row reveal"><span class="label">2023 · 2026</span><div><h3>Membership &amp; Election Committee</h3><p>Student Tech Society · State University</p></div></div>
+        <div class="row reveal"><span class="label">2024 · 2025</span><div><h3>Media &amp; Publications Committee</h3><p>Student Tech Society · State University</p></div></div>
+        <div class="row reveal"><span class="label">2022 · 2023</span><div><h3>External Affairs, Merchandise &amp; Franchising</h3><p>Student Tech Society · Vendor negotiation and inventory tracking</p></div></div>
+        <div class="row reveal"><span class="label">2022 · 2026</span><div><h3>B.S. Information Technology</h3><p>State University, Main Campus · Network &amp; Web Application · Dean's Lister</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" aria-labelledby="contact-title" style="border-bottom:0">
+    <div class="wrap">
+      <span class="label">Contact</span>
+      <h2 id="contact-title" class="serif reveal">Have work you'd like off your plate? <em>Let's talk.</em></h2>
+      <div class="cta reveal" style="--i:1"><a class="btn primary" href="mailto:alex@example.com">Email me</a><a class="btn ghost" href="deck.html">View as slides</a></div>
+      <div class="contact-grid">
+        <a class="card reveal" href="mailto:alex@example.com"><div class="ico plain"><svg><use href="#i-mail"/></svg></div><span class="label">Email</span><strong>alex@example.com</strong></a>
+        <a class="card reveal" style="--i:1" href="https://www.linkedin.com/in/alex-taylor/" target="_blank" rel="noopener"><div class="ico blue"><svg><use href="#i-in"/></svg></div><span class="label">LinkedIn</span><strong>alex-taylor</strong></a>
+        <a class="card reveal" style="--i:2" href="https://docs.google.com/document/d/e/sample-resume-doc/pub" target="_blank" rel="noopener"><div class="ico plain"><svg><use href="#i-doc"/></svg></div><span class="label">Resume</span><strong>Live Google Doc</strong></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span class="label">Alex Taylor · Portfolio 2026</span><span class="label">Remote, Worldwide</span></div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+  } else { els.forEach(el => el.classList.add('in')); }
+</script>
+</body>
+</html>

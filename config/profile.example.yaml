@@ -1,0 +1,261 @@
+# ==============================================================================
+# Candidate Profile & Qualification Configuration
+# Copy this file to config/profile.yaml and customize with your verified facts.
+# ==============================================================================
+
+candidate:
+  name: "Alex Taylor"
+  display_name: "Alex Taylor"
+  email: "alex.taylor@example.com"
+  phone: "+1-555-0199"
+  location: "Remote, Worldwide"
+  linkedin: "https://linkedin.com/in/alex-taylor"
+  portfolio_url: "https://portfolio.example.com"
+  resume_url: "https://docs.google.com/document/d/your-resume-link/pub"
+  degree: "B.S. in Information Technology & Systems Analysis"
+  certifications:
+    - "Microsoft Office Specialist (MOS): Microsoft 365 Apps (Word, Excel, PowerPoint)"
+    - "PMI Project Management Ready Certified"
+    - "IT Specialist in Device Configuration & Management"
+
+role_categories:
+  Virtual & Admin Assistance:
+    title_keywords:
+      - "\\bvirtual\\s*assistant\\b"
+      - "\\bva\\b"
+      - "\\badmin(?:istrative)?\\s*assistant\\b"
+      - "\\bexecutive\\s*assistant\\b"
+      - "\\bpersonal\\s*assistant\\b"
+      - "\\bea\\b"
+      - "\\bgeneral\\s*va\\b"
+      - "\\boffice\\s*assistant\\b"
+      - "\\badmin\\s*support\\b"
+      - "\\badmin\\s*va\\b"
+      - "\\breceptionist\\b"
+      - "\\bsecretary\\b"
+    base_fit: 48
+    selling_point: "Executive administrative assistance, calendar coordination, daily operations, and client correspondence."
+
+  Recruitment & Sourcing:
+    title_keywords:
+      - "\\brecruit(?:er|ment|ing)\\b"
+      - "\\btalent\\s*(?:acquisition|sourcing|sourcer)\\b"
+      - "\\bsourcer\\b"
+      - "\\bsourcing\\s*(?:specialist|va|assistant)\\b"
+      - "\\bhr\\s*(?:assistant|coordinator|va|specialist|admin)\\b"
+      - "\\bhuman\\s*resources\\b"
+      - "\\blead\\s*gen(?:eration)?\\b"
+      - "\\bheadhunter\\b"
+      - "\\bstaffing\\b"
+      - "\\bprospecting\\b"
+      - "\\brecruitment\\s*va\\b"
+    base_fit: 50
+    selling_point: "End-to-end recruitment sourcing: job posting management, candidate screening via LinkedIn, and pipeline tracking."
+
+  Data Entry & Bookkeeping:
+    title_keywords:
+      - "\\bdata\\s*(?:entry|encoder|encoding|specialist|clerk|processor|management|analyst)\\b"
+      - "\\bbookkeep(?:er|ing)\\b"
+      - "\\baccounting\\s*(?:assistant|clerk|va)\\b"
+      - "\\brecords\\s*(?:specialist|management|clerk)\\b"
+      - "\\bspreadsheet\\b"
+      - "\\bexcel\\s*(?:specialist|expert|va|assistant)\\b"
+      - "\\bback\\s*office\\b"
+      - "\\bdocument\\s*controller\\b"
+      - "\\bresearch(?:er)?\\s*(?:va|assistant|associate)\\b"
+    base_fit: 48
+    selling_point: "High-accuracy data entry, spreadsheet management, financial transaction categorization, and database auditing."
+
+  Social Media & Content:
+    title_keywords:
+      - "\\bsocial\\s*media\\b"
+      - "\\bsmm\\b"
+      - "\\bcontent\\s*(?:creator|creation|assistant|manager|coordinator)\\b"
+      - "\\bcanva\\b"
+      - "\\bcapcut\\b"
+      - "\\bgraphic\\s*design(?:er)?\\b"
+      - "\\bvideo\\s*edit(?:or|ing)\\b"
+      - "\\breels?\\b"
+      - "\\btiktok\\b"
+      - "\\bmarketing\\s*(?:assistant|va|coordinator)\\b"
+      - "\\bbrand(?:ing)?\\s*(?:assistant|coordinator)\\b"
+      - "\\bcommunity\\s*manager\\b"
+      - "\\bcopywrit(?:er|ing)\\b"
+    base_fit: 46
+    selling_point: "Social media content creation, digital graphics with Canva, short-form video editing, and community engagement."
+
+  Operations & Coordinator:
+    title_keywords:
+      - "\\boperations\\s*(?:assistant|coordinator|va|specialist)\\b"
+      - "\\bproject\\s*(?:coordinator|assistant|manager)\\b"
+      - "\\bcustomer\\s*(?:service|support|care|success)\\b"
+      - "\\bclient\\s*(?:support|relations|services|onboarding)\\b"
+      - "\\be-?commerce\\s*(?:va|assistant|coordinator|specialist)\\b"
+      - "\\border\\s*processing\\b"
+      - "\\binventory\\b"
+      - "\\bprocurement\\b"
+      - "\\baccount\\s*coordinator\\b"
+      - "\\bchat\\s*support\\b"
+      - "\\bemail\\s*support\\b"
+    base_fit: 42
+    selling_point: "Project coordination, vendor liaison, inventory management, and multi-channel customer inquiry response."
+
+  IT & Systems Analysis:
+    title_keywords:
+      - "\\bsystem(?:s)?\\s*analyst\\b"
+      - "\\btechnical\\s*(?:support|writer|documentation|va|assistant)\\b"
+      - "\\bit\\s*(?:support|specialist|assistant|helpdesk)\\b"
+      - "\\bhelp\\s*desk\\b"
+      - "\\bqa\\s*(?:tester|analyst|specialist)\\b"
+      - "\\bquality\\s*assurance\\b"
+      - "\\btech\\s*va\\b"
+      - "\\bweb\\s*(?:admin|assistant)\\b"
+    base_fit: 40
+    selling_point: "Technical documentation, systems analysis, software configuration, and web administration support."
+
+candidate_skills:
+  - name: "Virtual Assistance"
+    patterns: ["\\bvirtual\\s*assist(?:ant|ance)\\b", "\\bgeneral\\s*va\\b", "\\badmin\\s*va\\b"]
+    weight: 6
+  - name: "Administrative Support"
+    patterns: ["\\badministrative\\b", "\\badmin\\s*(?:support|tasks|assistant|duties)\\b", "\\boffice\\s*management\\b", "\\bback-?office\\b", "\\bexecutive\\s*assistant\\b"]
+    weight: 6
+  - name: "Calendar & Scheduling"
+    patterns: ["\\bcalendar\\s*(?:management|scheduling)\\b", "\\bmanage\\s*calendars?\\b", "\\bschedul(?:e|ing)\\s*(?:appointments?|meetings?|interviews?|calls?)\\b", "\\bappointment\\s*setting\\b", "\\bdiary\\s*management\\b"]
+    weight: 5
+  - name: "Email & Inbox Management"
+    patterns: ["\\bemail\\s*management\\b", "\\binbox\\s*management\\b", "\\bmanage\\s*(?:emails?|inbox)\\b", "\\bgmail\\b", "\\boutlook\\b", "\\bcorrespondence\\b"]
+    weight: 5
+  - name: "Recruitment & Talent Sourcing"
+    patterns: ["\\brecruit(?:ment|ing|er)\\b", "\\btalent\\s*(?:acquisition|sourcing)\\b", "\\bcandidate\\s*(?:sourcing|screening|pipeline)\\b", "\\bapplicant\\s*tracking\\b", "\\bjob\\s*postings?\\b"]
+    weight: 6
+  - name: "LinkedIn & Sales Navigator"
+    patterns: ["\\blinkedin\\b", "\\bsales\\s*navigator\\b"]
+    weight: 6
+  - name: "Lead Generation & Outreach"
+    patterns: ["\\blead\\s*gen(?:eration)?\\b", "\\bprospecting\\b", "\\bcandidate\\s*outreach\\b", "\\bboolean\\s*search\\b", "\\binfluencer\\s*(?:research|outreach)\\b"]
+    weight: 5
+  - name: "Google Workspace & Sheets"
+    patterns: ["\\bgoogle\\s*sheets?\\b", "\\bgoogle\\s*workspace\\b", "\\bgoogle\\s*docs?\\b", "\\bgoogle\\s*drive\\b", "\\bg-?suite\\b", "\\bspreadsheets?\\b"]
+    weight: 5
+  - name: "Microsoft 365 & Excel"
+    patterns: ["\\bexcel\\b", "\\bmicrosoft\\s*office\\b", "\\bms\\s*office\\b", "\\bmicrosoft\\s*365\\b", "\\bword\\b", "\\bpowerpoint\\b"]
+    weight: 5
+  - name: "Data Entry & Encoding"
+    patterns: ["\\bdata\\s*entry\\b", "\\bdata\\s*encod(?:er|ing)\\b", "\\bdata\\s*management\\b", "\\baccurate\\s*data\\b", "\\bdatabase\\s*management\\b"]
+    weight: 6
+  - name: "Bookkeeping & Financial Records"
+    patterns: ["\\bbookkeeping\\b", "\\btransaction\\s*categorization\\b", "\\bledger\\b", "\\binvoic(?:e|ing)\\b", "\\bbilling\\b", "\\bfinancial\\s*(?:records?|data)\\b"]
+    weight: 4
+  - name: "Canva & Graphic Design"
+    patterns: ["\\bcanva\\b", "\\bgraphic\\s*design\\b", "\\bposters?\\b", "\\bvisual\\s*assets?\\b", "\\bpromotional\\s*materials?\\b", "\\bpubmats?\\b"]
+    weight: 5
+  - name: "Short-Form Video & Content"
+    patterns: ["\\bcapcut\\b", "\\bvideo\\s*edit(?:or|ing)\\b", "\\breels?\\b", "\\btiktok\\s*videos?\\b", "\\bshorts\\b", "\\bsocial\\s*media\\s*stories\\b"]
+    weight: 5
+  - name: "Social Media Management"
+    patterns: ["\\bsocial\\s*media\\s*(?:management|manager|posting|content|branding)\\b", "\\bcontent\\s*creation\\b", "\\bcaption\\s*writing\\b", "\\bcaptions?\\b"]
+    weight: 5
+  - name: "Customer & Inquiry Support"
+    patterns: ["\\bcustomer\\s*(?:service|support)\\b", "\\binquir(?:y|ies)\\s*management\\b", "\\brespond(?:ing)?\\s*to\\s*inquiries\\b", "\\bclient\\s*communication\\b"]
+    weight: 4
+  - name: "Project Coordination"
+    patterns: ["\\bproject\\s*management\\b", "\\bproject\\s*coordinat(?:or|ion)\\b", "\\bsops?\\b", "\\bstandard\\s*operating\\s*procedures?\\b"]
+    weight: 4
+  - name: "Systems Analysis & Documentation"
+    patterns: ["\\bsystems?\\s*analysis\\b", "\\btechnical\\s*documentation\\b", "\\bprocess\\s*mapping\\b"]
+    weight: 4
+  - name: "Vendor & Inventory Tracking"
+    patterns: ["\\bvendor\\s*(?:coordination|management)\\b", "\\bsupplier\\b", "\\binventory\\s*(?:tracking|management)\\b", "\\bprocurement\\b"]
+    weight: 4
+  - name: "Data Privacy & Confidentiality"
+    patterns: ["\\bconfidential(?:ity)?\\b", "\\bdata\\s*privacy\\b", "\\bnda\\b", "\\bsensitive\\s*(?:data|information)\\b"]
+    weight: 3
+  - name: "Attention to Detail & Organization"
+    patterns: ["\\battention\\s*to\\s*detail\\b", "\\bdetail-?oriented\\b", "\\bhighly\\s*organized\\b", "\\btime\\s*management\\b"]
+    weight: 3
+
+potential_gaps:
+  - name: "GoHighLevel (GHL)"
+    patterns: ["\\bgohighlevel\\b", "\\bghl\\b"]
+  - name: "QuickBooks / Xero / MYOB"
+    patterns: ["\\bquickbooks\\b", "\\bxero\\b", "\\bmyob\\b"]
+  - name: "Adobe Creative Suite (Photoshop/Premiere/AE)"
+    patterns: ["\\bphotoshop\\b", "\\bpremiere\\s*pro\\b", "\\bafter\\s*effects\\b", "\\billustrator\\b", "\\bindesign\\b"]
+  - name: "Paid Ads Media Buying (Meta/Google PPC)"
+    patterns: ["\\bmeta\\s*ads\\b", "\\bfacebook\\s*ads\\b", "\\bgoogle\\s*ads\\b", "\\bppc\\b", "\\bmedia\\s*buyer\\b"]
+  - name: "Custom Software Coding (React/Node/Python/PHP)"
+    patterns: ["\\breact\\b", "\\bnode\\.js\\b", "\\bpython\\b", "\\blaravel\\b", "\\bphp\\b", "\\bflutter\\b", "\\bc#\\b", "\\b\\.net\\b", "\\btypescript\\b"]
+  - name: "WordPress / Elementor / Webflow"
+    patterns: ["\\bwordpress\\b", "\\belementor\\b", "\\bwebflow\\b", "\\bdivi\\b"]
+  - name: "Technical SEO (Ahrefs/SEMrush)"
+    patterns: ["\\bahrefs\\b", "\\bsemrush\\b", "\\bbacklinks?\\b", "\\btechnical\\s*seo\\b"]
+  - name: "Shopify / Amazon Seller Central"
+    patterns: ["\\bshopify\\b", "\\bseller\\s*central\\b", "\\bamazon\\s*fba\\b", "\\btiktok\\s*shop\\b"]
+  - name: "Outbound Cold Calling / Dialer"
+    patterns: ["\\bcold\\s*call(?:er|ing)\\b", "\\bskip\\s*tracing\\b", "\\bpropstream\\b", "\\bpodio\\b", "\\boutbound\\s*calling\\b"]
+  - name: "Zapier / Make / n8n Automation"
+    patterns: ["\\bzapier\\b", "\\bmake\\.com\\b", "\\bn8n\\b", "\\bairtable\\b"]
+  - name: "CRM Administration (HubSpot/Salesforce/Zoho)"
+    patterns: ["\\bhubspot\\b", "\\bsalesforce\\b", "\\bzoho\\b", "\\bpipedrive\\b"]
+  - name: "Medical Billing / HIPAA / Legal Paralegal"
+    patterns: ["\\bmedical\\s*billing\\b", "\\bhipaa\\b", "\\bicd-?10\\b", "\\bpersonal\\s*injury\\b", "\\bparalegal\\b", "\\blitigation\\b"]
+  - name: "CAD / AutoCAD / Revit / 3D"
+    patterns: ["\\bautocad\\b", "\\brevit\\b", "\\bsketchup\\b", "\\barchicad\\b", "\\bblender\\b"]
+
+hard_mismatches:
+  - "\\b(?:senior|lead|principal|staff)\\s+(?:software|full-?\\s*stack|backend|frontend|devops|cloud|data|ai|ml)\\b"
+  - "\\b(?:software|full-?\\s*stack|backend|frontend|ios|android|flutter|react|node|python|php|laravel|wordpress|shopify|golang|rust|solidity|dotnet|\\.net|c#)\\s+(?:developer|engineer|programmer|architect)\\b"
+  - "\\b(?:architect|civil\\s*engineer|structural\\s*engineer|mechanical\\s*engineer|electrical\\s*engineer|drafter|draftsperson|estimator)\\b"
+  - "\\b(?:registered\\s*nurse|rn|medical\\s*doctor|physician|pharmacist|therapist|medical\\s*scribe|medical\\s*biller)\\b"
+  - "\\b(?:cpa|tax\\s*accountant|tax\\s*preparer|enrolled\\s*agent|paralegal|attorney|lawyer|legal\\s*assistant)\\b"
+  - "\\b(?:german|mandarin|cantonese|japanese|korean|french|spanish|arabic|dutch|italian)\\b"
+  - "\\b(?:media\\s*buyer|ppc\\s*specialist|google\\s*ads\\s*specialist|facebook\\s*ads\\s*specialist|seo\\s*specialist)\\b"
+  - "\\b(?:cold\\s*caller|telemarketer)\\b"
+
+red_flags:
+  - name: "Workload: 'Wear many hats' / multi-role scope creep"
+    patterns: ["\\bwear\\s+many\\s+hats\\b", "\\bjack\\s+of\\s+all\\s+trades\\b"]
+  - name: "Workload: 'Fast-paced / high-pressure environment'"
+    patterns: ["\\bfast-?paced\\s+environment\\b", "\\bunder\\s+extreme\\s+pressure\\b", "\\bhit\\s+the\\s+ground\\s+running\\b"]
+  - name: "Culture: 'Rockstar / Ninja / Guru' buzzwords"
+    patterns: ["\\brock\\s*star\\b", "\\bninja\\b", "\\bguru\\b", "\\bwizard\\b"]
+  - name: "Culture: 'Work hard, play hard / Like a family'"
+    patterns: ["\\bwork\\s+hard,?\\s+play\\s+hard\\b", "\\blike\\s+a\\s+family\\b"]
+  - name: "Compensation: Commission-only / No base pay"
+    patterns: ["\\bcommission\\s+only\\b", "\\b100%\\s+commission\\b", "\\bno\\s+base\\s+salary\\b"]
+  - name: "Compensation: Unpaid trial / Free test work"
+    patterns: ["\\bunpaid\\s+trial\\b", "\\bunpaid\\s+training\\b", "\\bfree\\s+trial\\s+week\\b"]
+  - name: "Heavy Outbound Cold Calling (100+ calls/day)"
+    patterns: ["\\b100\\+?\\s+calls\\b", "\\bheavy\\s+cold\\s+calling\\b", "\\bdialer\\b"]
+  - name: "Invasive Monitoring / Webcam Always On"
+    patterns: ["\\bwebcam\\s+on\\s+all\\s+day\\b", "\\bcamera\\s+on\\s+at\\s+all\\s+times\\b"]
+
+verified_experience:
+  - role: "Executive Administrative Assistant"
+    org: "Global Operations Agency"
+    period: "2024 - Present"
+    metrics:
+      - "Managed executive calendar, schedule coordination, and business correspondence."
+      - "Streamlined team task pipelines in Google Workspace and Notion."
+      - "Maintained rapid turnaround on client inquiries across chat and email."
+  - role: "Data & Systems Specialist"
+    org: "Digital Operations Consultancy"
+    period: "2022 - 2024"
+    metrics:
+      - "Executed high-accuracy alphanumeric data entry and financial record categorization."
+      - "Maintained database integrity with zero discrepancies."
+      - "Developed standard operating procedures for new team onboarding."
+
+logistics:
+  internet: "Primary high-speed fiber connection (100+ Mbps) + mobile hotspot backup"
+  power: "Dedicated home office workstation with battery/UPS backup"
+  availability: "Immediate start; flexible across US (EST/PST), Australia (AEST), UK (GMT), or local business hours"
+  hardware: "Dedicated workstation, dual monitors, noise-canceling headset"
+
+anti_hallucination_rules:
+  - "Never invent software, tools, or certifications not explicitly declared in this profile."
+  - "When a job requires tools not listed (e.g. QuickBooks, GHL), frame as an 'adjacent skill bridge'."
+  - "Never claim years of experience exceeding verified job history."
+  - "Maintain proposal word count strictly between 150 and 250 words."
+  - "Always address detected screening codes and mandatory questions in the first two lines."

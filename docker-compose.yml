@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  jobhunt:
+    build: .
+    container_name: jobhunt_opensource
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
+      - "5055:5055"
+    environment:
+      - PORT=5050
+      - HOST=0.0.0.0
+      - MCP_PORT=5055
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./config:/app/config
+      - ./jobs.db:/app/jobs.db
+    command: python src/app.py

@@ -1,0 +1,131 @@
+# ==============================================================================
+# JobHunt OpenSource - Git Ignore Specification
+# ==============================================================================
+
+# --- Secrets and Environment Files ---
+.env
+.env.*
+!.env.example
+*.env
+*.key
+*.pem
+*.cert
+*.secret
+
+# --- SQLite Database Files & WAL Journal Artifacts ---
+# NEVER commit binary databases or SQLite journals
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+jobs.db
+jobs.db-wal
+jobs.db-shm
+*.db.gcs_download
+
+# --- Python Bytecode, Caches & Environments ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- Candidate Documents & Private PII Artifacts ---
+# NEVER commit personal resume binaries or unredacted profile drafts
+*.pdf
+*resume*.pdf
+*portfolio*.pdf
+Profile.md
+cv.md
+profile.yaml
+profile.json
+profile.md
+*.eml
+resume.html
+config/resume.html
+execution/artifacts/
+
+# --- Media Binaries, Video Projects & Screenshots ---
+# Large binary assets and video renders must never be committed
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+ojp-intro-video/
+*.png
+*.jpg
+*.jpeg
+*.webp
+!docs/*.png
+!docs/*.svg
+
+# --- Agent Orchestration & Tool Metadata ---
+.agents/teamwork/
+.taste-skill/
+.hyperframes/
+.gemini/
+.claude/
+.cursor/
+
+# --- Operating System & Editor Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDEs and Editors
+.vscode/
+!.vscode/settings.json.example
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# Deployment & Host Artifacts
+.netlify/
+.vercel/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+

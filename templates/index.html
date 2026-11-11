@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en" data-type="software" data-radius="soft" data-buttons="solid" data-motion>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="page-type" content="software" />
+  <meta name="site-kind" content="software" />
+  <title>OnlineJobs.ph Job Matcher & Enricher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..600&family=Geist+Mono:wght@400..500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Light-Neutral Palette (92% neutral paper & ink, single blueprint accent, zero violet) */
+      --g-main: #f6f5f2;
+      --g-alt: #edece7;
+      --card: #ffffff;
+      --ink: #141413;
+      --ink-body: #262523;
+      --muted: #63615b;
+      --line: rgba(20, 20, 19, 0.10);
+      --line-strong: rgba(20, 20, 19, 0.22);
+
+      /* Single Functional Accent (Blueprint Blue, no violet/lavender) */
+      --action: #1a4be0;
+      --action-hover: #153ec0;
+      --action-ink: #ffffff;
+      --action-tint: rgba(26, 75, 224, 0.07);
+
+      /* Semantic Status Signals (Muted ink-adjacent tones, used sparingly) */
+      --fit-high-bg: #edf6f0;
+      --fit-high-ink: #0f6338;
+      --fit-high-line: rgba(15, 99, 56, 0.22);
+
+      --fit-good-bg: #eef2fa;
+      --fit-good-ink: #1a4be0;
+      --fit-good-line: rgba(26, 75, 224, 0.22);
+
+      --fit-mod-bg: #f9f3e8;
+      --fit-mod-ink: #8a5308;
+      --fit-mod-line: rgba(138, 83, 8, 0.22);
+
+      --warn-bg: #fbeeee;
+      --warn-ink: #9e2828;
+      --warn-line: rgba(158, 40, 40, 0.22);
+
+      /* Typography Tokens (Geist + Geist Mono, weights 400 & 500) */
+      --font-display: "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-text: "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      /* Spacing & Radius Scale (soft: 8 / 12 / 16) */
+      --r-sm: 8px;
+      --r-md: 12px;
+      --r-lg: 16px;
+      --gut: 48px;
+
+      /* Motion Tokens (taste-skill motion.md) */
+      --m-in: 140ms;
+      --m-out: 200ms;
+      --m-press: 90ms;
+      --m-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @media (max-width: 768px) {
+      :root { --gut: 20px; }
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--g-main);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: min(100% - 2 * var(--gut), 1320px);
+      margin-inline: auto;
+    }
+
+    /* Fixed Opaque Top Bar (system.md Nav) */
+    header.nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      height: 68px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mark--initial {
+      width: 34px;
+      height: 34px;
+      border-radius: var(--r-sm);
+      background: var(--ink);
+      color: var(--card);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand__title {
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .brand__meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Buttons (system.md + motion.md) */
+    .btn {
+      height: 40px;
+      padding: 0 18px;
+      border-radius: var(--r-sm);
+      font-family: var(--font-text);
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        transform var(--m-out) var(--m-ease),
+        background-color var(--m-out) var(--m-ease),
+        border-color var(--m-out) var(--m-ease),
+        color var(--m-out) var(--m-ease);
+    }
+
+    .btn--primary {
+      background: var(--action);
+      color: var(--action-ink);
+      border: 1px solid var(--action);
+    }
+
+    .btn--ink {
+      background: var(--ink);
+      color: var(--card);
+      border: 1px solid var(--ink);
+    }
+
+    .btn--secondary {
+      background: var(--card);
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+    }
+
+    @media (pointer: fine) {
+      .btn--primary:hover:not(:disabled) {
+        background: var(--action-hover);
+        border-color: var(--action-hover);
+        transform: translateY(-1px);
+        transition-duration: var(--m-in);
+      }
+      .btn--ink:hover:not(:disabled) {
+        background: #2b2b29;
+        transform: translateY(-1px);
+        transition-duration: var(--m-in);
+      }
+      .btn--secondary:hover:not(:disabled) {
+        background: var(--g-main);
+        border-color: var(--ink);
+        transform: translateY(-1px);
+        transition-duration: var(--m-in);
+      }
+      .btn:active:not(:disabled) {
+        transform: translateY(1px) scale(0.985);
+        transition-duration: var(--m-press);
+      }
+      .btn:hover svg.m-arrow {
+        transform: translateX(3px);
+      }
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    svg.ui-icon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.65;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    svg.m-arrow {
+      transition: transform var(--m-out) var(--m-ease);
+    }
+
+    /* Peak Status Pill in Nav */
+    .peak-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border-radius: var(--r-sm);
+      background: var(--g-main);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      color: var(--ink-body);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #0f6338;
+      flex-shrink: 0;
+    }
+
+    .status-dot--paused {
+      background: var(--muted);
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Progress Banner */
+    .progress-banner {
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
+    }
+
+    .progress-track {
+      height: 4px;
+      background: var(--g-alt);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--action);
+      transition: width 240ms var(--m-ease);
+    }
+
+    /* Summary Strip (Clean 1px Hairline Grid — No nested boxes) */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      margin-top: 24px;
+      overflow: hidden;
+    }
+
+    @media (max-width: 1200px) {
+      .metrics-strip { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .metrics-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .metric-cell {
+      padding: 18px 20px;
+      border-right: 1px solid var(--line);
+      cursor: pointer;
+      transition: background-color var(--m-out) var(--m-ease);
+    }
+
+    .metric-cell:last-child {
+      border-right: none;
+    }
+
+    .metric-cell:hover {
+      background: var(--g-main);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-top: 4px;
+      line-height: 1.15;
+    }
+
+    .metric-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Navigation Tabs & Filter Bar */
+    .toolbar-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 28px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab-group {
+      display: inline-flex;
+      background: var(--g-alt);
+      padding: 4px;
+      border-radius: var(--r-sm);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-text);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color var(--m-in) var(--m-ease), color var(--m-in) var(--m-ease);
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background: var(--card);
+      color: var(--ink);
+      box-shadow: 0 1px 2px rgba(20, 20, 19, 0.06);
+    }
+
+    .filter-bar {
+      display: grid;
+      grid-template-columns: 2fr repeat(6, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      padding: 16px;
+    }
+
+    @media (max-width: 1280px) {
+      .filter-bar { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .filter-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .filter-bar { grid-template-columns: 1fr; }
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .input-control, .select-control {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--line-strong);
+      background: var(--card);
+      color: var(--ink);
+      font-family: var(--font-text);
+      font-size: 14px;
+      outline: none;
+      transition: border-color var(--m-in) var(--m-ease), box-shadow var(--m-in) var(--m-ease);
+    }
+
+    .input-control:focus, .select-control:focus {
+      border-color: var(--action);
+      box-shadow: 0 0 0 3px var(--action-tint);
+    }
+
+    /* View Mode Switcher (Detailed vs Compact) */
+    .view-mode-toggle {
+      display: inline-flex;
+      background: var(--g-alt);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .view-toggle-btn {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--font-text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color var(--m-in) var(--m-ease), color var(--m-in) var(--m-ease);
+    }
+
+    .view-toggle-btn:hover {
+      color: var(--ink);
+    }
+
+    .view-toggle-btn.active {
+      background: var(--card);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    /* Score Progress Bar (0-100% Suitability Metric Indicator) */
+    .score-badge-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-progress {
+      display: inline-flex;
+      align-items: center;
+      height: 6px;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .score-progress__track {
+      width: 100%;
+      height: 100%;
+      background: var(--line);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .score-progress__fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 240ms var(--m-ease);
+    }
+
+    .score-progress__fill--high {
+      background: #0047DF; /* Primary Blue */
+    }
+
+    .score-progress__fill--good {
+      background: #0284c7; /* Solid Cerulean Blue */
+    }
+
+    .score-progress__fill--mod {
+      background: #d97706; /* Solid Amber */
+    }
+
+    .score-progress__fill--low {
+      background: #737373; /* Neutral Slate */
+    }
+
+    /* Compact View Table Styles */
+    .compact-table-wrap {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      overflow-x: auto;
+      margin-top: 16px;
+      margin-bottom: 64px;
+    }
+
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .compact-table th {
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      background: var(--g-main);
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .compact-row {
+      border-bottom: 1px solid var(--line);
+      cursor: pointer;
+      transition: background-color var(--m-in) var(--m-ease);
+    }
+
+    .compact-row:last-child {
+      border-bottom: none;
+    }
+
+    .compact-row:hover {
+      background: var(--g-main);
+    }
+
+    .compact-table td {
+      padding: 10px 14px;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .compact-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .compact-score-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 130px;
+    }
+
+    .compact-score-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .compact-score-num {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .compact-score-tier {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .compact-title-cell {
+      min-width: 260px;
+    }
+
+    .compact-title-link {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.35;
+      display: block;
+      transition: color var(--m-in) var(--m-ease);
+    }
+
+    .compact-row:hover .compact-title-link {
+      color: var(--action);
+    }
+
+    .compact-employer-sub {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .compact-actions-cell {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    /* Job Cards (cards.md: White on #F6F5F2, 1px hairline, 2px hover lift, max 2 levels) */
+    .jobs-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+      padding-bottom: 64px;
+    }
+
+    .job-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: 1fr 296px;
+      gap: 24px;
+      align-items: start;
+      cursor: pointer;
+      transition:
+        transform 180ms var(--m-ease),
+        border-color var(--m-in) var(--m-ease),
+        box-shadow 180ms var(--m-ease);
+    }
+
+    @media (pointer: fine) {
+      .job-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+        box-shadow: 0 8px 24px rgba(20, 20, 19, 0.05);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .job-card {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    .job-card__top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--line);
+      background: var(--g-main);
+      color: var(--ink-body);
+    }
+
+    .badge--high {
+      background: var(--fit-high-bg);
+      color: var(--fit-high-ink);
+      border-color: var(--fit-high-line);
+    }
+
+    .badge--good {
+      background: var(--fit-good-bg);
+      color: var(--fit-good-ink);
+      border-color: var(--fit-good-line);
+    }
+
+    .badge--mod {
+      background: var(--fit-mod-bg);
+      color: var(--fit-mod-ink);
+      border-color: var(--fit-mod-line);
+    }
+
+    .badge--warn {
+      background: var(--warn-bg);
+      color: var(--warn-ink);
+      border-color: var(--warn-line);
+    }
+
+    .job-card__title {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0 0 6px 0;
+      line-height: 1.35;
+    }
+
+    .job-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .job-card__meta strong {
+      color: var(--ink-body);
+      font-weight: 500;
+    }
+
+    .job-card__desc {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-body);
+      margin: 0 0 12px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-width: 72ch;
+    }
+
+    .skill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-chip {
+      font-size: 13px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      background: var(--g-main);
+      color: var(--ink-body);
+      border: 1px solid var(--line);
+    }
+
+    .skill-chip--gap {
+      color: var(--muted);
+      border-style: dashed;
+    }
+
+    .job-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-left: 1px solid var(--line);
+      padding-left: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .job-card__actions {
+        border-left: none;
+        border-top: 1px solid var(--line);
+        padding-left: 0;
+        padding-top: 14px;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    .link-plain {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .link-plain:hover {
+      color: var(--ink);
+    }
+
+    /* Schedule Matrix & Table */
+    .panel-box {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      padding: 24px;
+      margin-top: 16px;
+    }
+
+    .peak-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 1024px) {
+      .peak-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .peak-grid { grid-template-columns: 1fr; }
+    }
+
+    .peak-tile {
+      padding: 16px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--line);
+      background: var(--g-main);
+    }
+
+    .peak-tile--next {
+      background: var(--card);
+      border-color: var(--action);
+      box-shadow: 0 0 0 1px var(--action);
+    }
+
+    table.clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    table.clean-table th {
+      text-align: left;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    table.clean-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-body);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(20, 20, 19, 0.42);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-window {
+      background: var(--card);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--r-lg);
+      max-width: 860px;
+      width: 100%;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(20, 20, 19, 0.14);
+    }
+
+    .modal-head {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-foot {
+      padding: 16px 24px;
+      border-top: 1px solid var(--line);
+      background: var(--g-main);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .jd-reader {
+      background: var(--g-main);
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-body);
+      white-space: pre-wrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 60;
+      background: var(--ink);
+      color: var(--card);
+      padding: 12px 18px;
+      border-radius: var(--r-sm);
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 28px rgba(20, 20, 19, 0.18);
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Opaque Header -->
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <div class="brand">
+        <span class="mark--initial">JH</span>
+        <div>
+          <h1 class="brand__title">OnlineJobs.ph Job Matcher & Enricher</h1>
+          <p class="brand__meta">Remote Job Search & Application Automation • US, UK & AU Peak Hours</p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div class="peak-status" id="next-peak-pill">
+          <span class="status-dot" id="scheduler-dot"></span>
+          <span>Next peak (<strong id="next-peak-region">UK</strong>): <span class="mono" id="next-peak-text">Loading...</span></span>
+          <button onclick="switchTab('schedule')" class="link-plain" style="margin-left: 4px;">View schedule</button>
+        </div>
+
+        <button id="btn-mcp" onclick="openMcpModal()" class="btn btn--secondary" title="Connect your AI Agent via MCP">
+          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          <span>MCP Connector</span>
+        </button>
+
+        <button id="btn-scrape-now" onclick="triggerScrapeNow()" class="btn btn--primary">
+          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          <span id="scrape-btn-label">Scrape 10 pages now</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Scrape Progress Bar -->
+  <div id="scrape-progress-bar" class="progress-banner hidden">
+    <div class="wrap">
+      <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 500;">
+        <span id="scrape-stage-label">Scraping OnlineJobs.ph...</span>
+        <span class="mono" id="scrape-progress-counts" style="color: var(--muted);">Page 0/10 • 0 discovered • 0 enriched</span>
+      </div>
+      <div class="progress-track">
+        <div id="scrape-progress-fill" class="progress-fill" style="width: 10%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Workspace -->
+  <main class="wrap">
+
+    <!-- KPI Metrics Strip (1px hairline grid, 95% neutral) -->
+    <section class="metrics-strip" aria-label="Job pipeline metrics">
+      <div class="metric-cell" onclick="switchTab('matched')">
+        <div class="metric-label">
+          <span>Matched roles (≥60%)</span>
+          <span class="mono" id="stat-avg-score" style="color: var(--fit-high-ink);">Avg --%</span>
+        </div>
+        <div class="metric-value" id="stat-matched-jobs">--</div>
+        <div class="metric-sub">
+          <span class="mono" id="stat-excellent-fits">0</span> excellent • <span class="mono" id="stat-good-fits">0</span> good fit
+        </div>
+      </div>
+
+      <div class="metric-cell" onclick="switchTab('last5h')">
+        <div class="metric-label">
+          <span>Scraped last 5h</span>
+          <span class="mono" style="color: var(--action); font-weight: 600;">Recent</span>
+        </div>
+        <div class="metric-value" id="stat-last5h-jobs">--</div>
+        <div class="metric-sub"><span class="mono" id="stat-last5h-matched">0</span> matched roles</div>
+      </div>
+
+      <div class="metric-cell" onclick="switchTab('all')">
+        <div class="metric-label">
+          <span>All scraped jobs</span>
+          <span>10 pages</span>
+        </div>
+        <div class="metric-value" id="stat-total-jobs">--</div>
+        <div class="metric-sub">Stored in local SQLite</div>
+      </div>
+
+      <div class="metric-cell" onclick="filterByRegion('US')">
+        <div class="metric-label">
+          <span>US clients</span>
+          <span class="mono">21:00–03:30</span>
+        </div>
+        <div class="metric-value" id="stat-region-us">--</div>
+        <div class="metric-sub">Filter US postings</div>
+      </div>
+
+      <div class="metric-cell" onclick="filterByRegion('AU')">
+        <div class="metric-label">
+          <span>AU clients</span>
+          <span class="mono">07:00–09:30</span>
+        </div>
+        <div class="metric-value" id="stat-region-au">--</div>
+        <div class="metric-sub">Filter AU postings</div>
+      </div>
+
+      <div class="metric-cell" onclick="filterByRegion('UK')">
+        <div class="metric-label">
+          <span>UK clients</span>
+          <span class="mono">17:00–19:30</span>
+        </div>
+        <div class="metric-value" id="stat-region-uk">--</div>
+        <div class="metric-sub">Filter UK postings</div>
+      </div>
+
+      <div class="metric-cell" onclick="filterByStatus('Shortlisted')">
+        <div class="metric-label">
+          <span>Active pipeline</span>
+          <span>Status</span>
+        </div>
+        <div class="metric-value">
+          <span id="stat-status-shortlisted">0</span><span style="font-size: 16px; color: var(--muted);"> / </span><span id="stat-status-applied" style="font-size: 20px; color: var(--fit-high-ink);">0</span>
+        </div>
+        <div class="metric-sub">
+          Shortlisted / Applied (<span class="mono" id="stat-status-tailoring">0</span> tailoring)
+        </div>
+      </div>
+    </section>
+
+    <!-- View Switcher & Count -->
+    <div class="toolbar-head">
+      <div class="tab-group" role="tablist">
+        <button id="tab-btn-matched" role="tab" aria-selected="true" onclick="switchTab('matched')" class="tab-btn">
+          <span>Matched roles</span>
+          <span class="mono" style="color: var(--muted);">(<span id="tab-count-matched">0</span>)</span>
+        </button>
+        <button id="tab-btn-last5h" role="tab" aria-selected="false" onclick="switchTab('last5h')" class="tab-btn">
+          <span>Last 5 hours</span>
+          <span class="mono" style="color: var(--muted);">(<span id="tab-count-last5h">0</span>)</span>
+        </button>
+        <button id="tab-btn-all" role="tab" aria-selected="false" onclick="switchTab('all')" class="tab-btn">
+          <span>All scraped jobs</span>
+          <span class="mono" style="color: var(--muted);">(<span id="tab-count-all">0</span>)</span>
+        </button>
+        <button id="tab-btn-schedule" role="tab" aria-selected="false" onclick="switchTab('schedule')" class="tab-btn">
+          <span>Peak schedule & logs</span>
+        </button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--muted); flex-wrap: wrap;">
+        <span>Showing <strong class="mono" style="color: var(--ink);" id="visible-jobs-count">0</strong> postings</span>
+        <button onclick="resetFilters()" class="link-plain">Reset filters</button>
+
+        <div class="view-mode-toggle" role="group" aria-label="Layout view mode">
+          <button id="view-mode-compact" onclick="setViewMode('compact')" class="view-toggle-btn active" title="Compact dense row view with score progress indicator">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            <span>Compact</span>
+          </button>
+          <button id="view-mode-detailed" onclick="setViewMode('detailed')" class="view-toggle-btn" title="Detailed card view">
+            <svg class="ui-icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18"/></svg>
+            <span>Detailed</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOBS LIST & FILTER VIEW -->
+    <section id="jobs-view-container">
+      <div class="filter-bar">
+        <div>
+          <label class="field-label" for="filter-search">Search role, skill, employer or description</label>
+          <input
+            type="text"
+            id="filter-search"
+            oninput="debounceLoadJobs()"
+            placeholder="Search Virtual Assistant, LinkedIn, Canva, Excel..."
+            class="input-control"
+          />
+        </div>
+
+        <div>
+          <label class="field-label" for="filter-date">Post date / Scrape window</label>
+          <select id="filter-date" onchange="loadJobs()" class="select-control">
+            <option value="All">All time</option>
+            <option value="last5hours">Scraped in last 5 hours</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="pastweek">Past week</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="filter-region">Client region</label>
+          <select id="filter-region" onchange="loadJobs()" class="select-control">
+            <option value="All">All regions</option>
+            <option value="US_UK_AU">US, UK & AU only</option>
+            <option value="US">United States (US)</option>
+            <option value="AU">Australia (AU)</option>
+            <option value="UK">United Kingdom (UK)</option>
+            <option value="Global">Global / Unspecified</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="filter-category">Role category</label>
+          <select id="filter-category" onchange="loadJobs()" class="select-control">
+            <option value="All">All categories</option>
+            <option value="Virtual & Admin Assistance">Virtual & Admin Assistance</option>
+            <option value="Recruitment & Sourcing">Recruitment & Sourcing</option>
+            <option value="Data Entry & Bookkeeping">Data Entry & Bookkeeping</option>
+            <option value="Social Media & Content">Social Media & Content</option>
+            <option value="Operations & Coordinator">Operations & Coordinator</option>
+            <option value="IT & Systems Analysis">IT & Systems Analysis</option>
+            <option value="Other">Other / Specialized</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="filter-status">Application status</label>
+          <select id="filter-status" onchange="loadJobs()" class="select-control">
+            <option value="All">All statuses</option>
+            <option value="New">New</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Tailoring">Tailoring</option>
+            <option value="Applied">Applied</option>
+            <option value="Interviewing">Interviewing</option>
+            <option value="Offer">Offer</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="filter-arrangement">Arrangement</label>
+          <select id="filter-arrangement" onchange="loadJobs()" class="select-control">
+            <option value="All">All arrangements</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Gig">Gig</option>
+            <option value="Any">Any / Flexible</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="sort-by">Sort order</label>
+          <div style="display: flex; gap: 6px;">
+            <select id="sort-by" onchange="loadJobs()" class="select-control">
+              <option value="match_score">Suitability score</option>
+              <option value="last_scraped_at">Scrape time (latest)</option>
+              <option value="posted_at">Post date & time</option>
+              <option value="salary">Est. monthly pay</option>
+              <option value="client_region">Client region</option>
+              <option value="status">Status</option>
+              <option value="title">Role title</option>
+            </select>
+            <button
+              id="sort-dir-btn"
+              onclick="toggleSortDir()"
+              title="Toggle ascending or descending order"
+              class="btn btn--secondary mono"
+              style="padding: 0 12px;"
+            >
+              ↓
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Cards Stack -->
+      <div id="jobs-list" class="jobs-stack">
+        <div class="panel-box" style="text-align: center; color: var(--muted);">Loading enriched jobs from SQLite...</div>
+      </div>
+    </section>
+
+    <!-- PEAK SCHEDULE & RUN LOGS VIEW -->
+    <section id="schedule-view-container" class="hidden" style="padding-bottom: 64px;">
+      <div class="panel-box">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 500; margin: 0;">US, UK & AU peak-hours schedule</h2>
+            <p style="font-size: 14px; color: var(--muted); margin: 4px 0 0 0;">
+              Runs automatically in Philippine Time (Asia/Manila, UTC+8) when employers in Australia, the United Kingdom, and the United States publish new roles.
+            </p>
+          </div>
+          <button id="btn-toggle-scheduler" onclick="toggleScheduler()" class="btn btn--secondary">
+            Pause automatic runs
+          </button>
+        </div>
+
+        <div id="peak-windows-grid" class="peak-grid"></div>
+      </div>
+
+      <div class="panel-box">
+        <h3 style="font-size: 18px; font-weight: 500; margin: 0 0 14px 0;">Recent SQLite enrichment runs</h3>
+        <div style="overflow-x: auto;">
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>Run</th>
+                <th>Started (PHT)</th>
+                <th>Completed (PHT)</th>
+                <th>Source</th>
+                <th>Target market</th>
+                <th>Pages</th>
+                <th>Scraped</th>
+                <th>New</th>
+                <th>Matched</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody id="scrape-runs-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JOB DETAIL & SUITABILITY MODAL -->
+  <div id="job-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeJobModal()">
+    <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head">
+        <div>
+          <div id="modal-badges" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;"></div>
+          <h2 id="modal-title" style="font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin: 0;">Job Title</h2>
+          <p id="modal-subtitle" style="font-size: 14px; color: var(--muted); margin: 6px 0 0 0;"></p>
+        </div>
+        <button onclick="closeJobModal()" class="btn btn--secondary" style="padding: 0 12px; height: 36px;" aria-label="Close modal">
+          Close
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Suitability Breakdown -->
+        <div style="background: var(--g-main); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 18px;">
+          <div style="font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px;">
+            Suitability evaluation & resume strategy
+          </div>
+          <p id="modal-eval-summary" style="font-size: 15px; color: var(--ink); margin: 0 0 14px 0; line-height: 1.55;"></p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 500; color: var(--fit-high-ink); margin-bottom: 6px;">Matched candidate skills</div>
+              <div id="modal-matched-skills" class="skill-row"></div>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px;">Unlisted tools or gaps</div>
+              <div id="modal-missing-skills" class="skill-row"></div>
+            </div>
+          </div>
+
+          <div id="modal-red-flags-box" class="hidden" style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);">
+            <div style="font-size: 13px; font-weight: 500; color: var(--warn-ink); margin-bottom: 6px;">Posting warnings</div>
+            <div id="modal-red-flags" class="skill-row"></div>
+          </div>
+        </div>
+
+        <!-- Status & Personal Notes -->
+        <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; align-items: end;">
+          <div>
+            <label class="field-label" for="modal-status">Application status</label>
+            <select id="modal-status" onchange="saveModalStatusAndNotes()" class="select-control">
+              <option value="New">New</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Tailoring">Tailoring</option>
+              <option value="Applied">Applied</option>
+              <option value="Interviewing">Interviewing</option>
+              <option value="Offer">Offer</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="modal-notes">Application notes</label>
+            <div style="display: flex; gap: 8px;">
+              <input
+                type="text"
+                id="modal-notes"
+                placeholder="Add application note or follow-up date..."
+                class="input-control"
+              />
+              <button onclick="saveModalStatusAndNotes()" class="btn btn--secondary">Save note</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP Proposal Generator Panel -->
+        <div style="background: var(--card); border: 1px solid var(--line-strong); border-radius: var(--r-sm); padding: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="status-pill status-pill--shortlisted" style="font-weight: 600;">⚡ MCP Proposal Engine</span>
+              <span style="font-size: 13px; color: var(--muted);">100% Grounded • Screening Trap Detection • 150-250 Words</span>
+            </div>
+            <button id="btn-generate-mcp-proposal" onclick="loadMcpProposalForModal()" class="btn btn--secondary" style="height: 32px; padding: 0 12px; font-size: 13px;">
+              <span>Draft Tailored Proposal</span>
+            </button>
+          </div>
+
+          <div id="mcp-proposal-container" class="hidden" style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+            <div id="mcp-proposal-meta" style="background: var(--g-main); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px; font-size: 13px;"></div>
+            <div>
+              <label class="field-label">Subject line (with screening code)</label>
+              <input type="text" id="mcp-proposal-subject" class="input-control mono" style="font-size: 13px;" readonly />
+            </div>
+            <div>
+              <label class="field-label">Generated letter (grounded in candidate verified history)</label>
+              <textarea id="mcp-proposal-text" class="input-control" rows="9" style="font-size: 14px; line-height: 1.5; font-family: var(--font-text);"></textarea>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span id="mcp-proposal-wordcount" class="mono" style="font-size: 12px; color: var(--muted);"></span>
+              <div style="display: flex; gap: 8px;">
+                <button onclick="copyGeneratedProposal()" class="btn btn--ink" style="height: 36px; padding: 0 14px;">
+                  <svg class="ui-icon" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span>Copy Proposal</span>
+                </button>
+                <button onclick="applyJobWithMcpProposal()" class="btn btn--primary" style="height: 36px; padding: 0 14px;">
+                  <svg class="ui-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+                  <span>Mark as Applied & Save</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Untruncated Job Description -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-size: 13px; font-weight: 500; color: var(--muted);">Full job description</span>
+            <span id="modal-employer-meta" style="font-size: 13px; color: var(--muted);"></span>
+          </div>
+          <div id="modal-description" class="jd-reader"></div>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button id="modal-btn-copy-tailor" class="btn btn--ink">
+            <svg class="ui-icon" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <span>Copy /onlinejobs-proposal-generator + JD</span>
+          </button>
+          <button id="modal-btn-copy-analyzer" class="btn btn--secondary">
+            <span>Copy /resume-tailor + JD</span>
+          </button>
+        </div>
+
+        <a id="modal-btn-open-url" href="#" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+          <span>Open job post</span>
+          <svg class="ui-icon m-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCP CONNECTOR MODAL -->
+  <div id="mcp-modal" class="modal-backdrop hidden" onclick="if(event.target===this) closeMcpModal()">
+    <div class="modal-window" style="max-width: 900px;" role="dialog" aria-modal="true" aria-labelledby="mcp-modal-title">
+      <div class="modal-head">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--r-sm); background: var(--ink); color: #fff; font-size: 18px;">
+            🔌
+          </span>
+          <div>
+            <h2 id="mcp-modal-title" style="font-size: 20px; font-weight: 500; margin: 0;">AI Agent MCP Connector</h2>
+            <p style="font-size: 13px; color: var(--muted); margin: 4px 0 0 0;">Model Context Protocol (MCP v2.3.0) • stdio & SSE streamable transports</p>
+          </div>
+        </div>
+        <button onclick="closeMcpModal()" class="btn btn--secondary" style="padding: 0 12px; height: 36px;">Close</button>
+      </div>
+
+      <div class="modal-body" style="gap: 18px;">
+        <div style="background: var(--fit-high-bg); border: 1px solid var(--fit-high-line); border-radius: var(--r-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="status-dot" style="background: #16a34a; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);"></span>
+            <span style="font-size: 14px; font-weight: 500; color: var(--fit-high-ink);">MCP Server Engine Ready</span>
+            <span style="font-size: 13px; color: var(--muted);">• 8 tools registered (search, evaluate, proposal, apply, scrape)</span>
+          </div>
+          <span class="mono" style="font-size: 12px; background: rgba(0,0,0,0.05); padding: 4px 8px; border-radius: 4px;">Port 5055 (SSE) | stdio</span>
+        </div>
+
+        <div>
+          <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--line); margin-bottom: 14px; overflow-x: auto;">
+            <button id="tab-btn-claude" onclick="switchMcpTab('claude')" class="subnav-btn subnav-btn--active">Claude Desktop</button>
+            <button id="tab-btn-cursor" onclick="switchMcpTab('cursor')" class="subnav-btn">Cursor</button>
+            <button id="tab-btn-antigravity" onclick="switchMcpTab('antigravity')" class="subnav-btn">Antigravity / Gemini</button>
+            <button id="tab-btn-sse" onclick="switchMcpTab('sse')" class="subnav-btn">SSE / HTTP Connector</button>
+            <button id="tab-btn-tools" onclick="switchMcpTab('tools')" class="subnav-btn">Available Tools (8)</button>
+          </div>
+
+          <div id="mcp-pane-claude">
+            <p style="font-size: 13px; color: var(--muted); margin: 0 0 8px 0;">Add to your <code>%APPDATA%\Claude\claude_desktop_config.json</code>:</p>
+            <div style="position: relative;">
+              <pre id="mcp-config-claude" class="mono jd-reader" style="font-size: 12px; margin: 0; max-height: 220px; overflow: auto;"></pre>
+              <button onclick="copyElementText('mcp-config-claude', this)" class="btn btn--ink" style="position: absolute; top: 10px; right: 10px; height: 30px; font-size: 12px; padding: 0 10px;">Copy Config</button>
+            </div>
+          </div>
+
+          <div id="mcp-pane-cursor" class="hidden">
+            <p style="font-size: 13px; color: var(--muted); margin: 0 0 8px 0;">Add to your Cursor settings or <code>.cursor/mcp.json</code>:</p>
+            <div style="position: relative;">
+              <pre id="mcp-config-cursor" class="mono jd-reader" style="font-size: 12px; margin: 0; max-height: 220px; overflow: auto;"></pre>
+              <button onclick="copyElementText('mcp-config-cursor', this)" class="btn btn--ink" style="position: absolute; top: 10px; right: 10px; height: 30px; font-size: 12px; padding: 0 10px;">Copy Config</button>
+            </div>
+          </div>
+
+          <div id="mcp-pane-antigravity" class="hidden">
+            <p style="font-size: 13px; color: var(--muted); margin: 0 0 8px 0;">Configuration for Antigravity or Gemini agent CLI:</p>
+            <div style="position: relative;">
+              <pre id="mcp-config-antigravity" class="mono jd-reader" style="font-size: 12px; margin: 0; max-height: 220px; overflow: auto;"></pre>
+              <button onclick="copyElementText('mcp-config-antigravity', this)" class="btn btn--ink" style="position: absolute; top: 10px; right: 10px; height: 30px; font-size: 12px; padding: 0 10px;">Copy Config</button>
+            </div>
+          </div>
+
+          <div id="mcp-pane-sse" class="hidden">
+            <p style="font-size: 13px; color: var(--muted); margin: 0 0 8px 0;">For remote agents, run: <code>python mcp_server.py --transport sse --port 5055</code></p>
+            <div style="position: relative;">
+              <pre id="mcp-config-sse" class="mono jd-reader" style="font-size: 12px; margin: 0; max-height: 220px; overflow: auto;"></pre>
+              <button onclick="copyElementText('mcp-config-sse', this)" class="btn btn--ink" style="position: absolute; top: 10px; right: 10px; height: 30px; font-size: 12px; padding: 0 10px;">Copy URL</button>
+            </div>
+          </div>
+
+          <div id="mcp-pane-tools" class="hidden">
+            <div id="mcp-tools-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto;"></div>
+          </div>
+        </div>
+
+        <div style="background: var(--g-main); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 14px;">
+          <div style="font-size: 13px; font-weight: 500; margin-bottom: 6px;">How your AI agent uses this connector:</div>
+          <ol style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--ink); line-height: 1.6;">
+            <li><strong>Finds Jobs:</strong> The agent calls <code>search_jobs(min_score=75, status='New')</code> to find high-match opportunities.</li>
+            <li><strong>Inspects & Traps:</strong> The agent calls <code>get_job_details(job_id)</code> to read the full JD and extract secret codes, screening traps, or email targets.</li>
+            <li><strong>Generates Proposal:</strong> The agent calls <code>generate_job_proposal(job_id)</code> to create a 150-250 word proposal with verified candidate facts and secret code handling.</li>
+            <li><strong>Applies & Tracks:</strong> The agent calls <code>apply_job(job_id, notes, proposal_text)</code> to automatically mark the job as Applied in your database and record the submitted text.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden" role="status">
+    <svg class="ui-icon" viewBox="0 0 24 24" style="color: #4ade80;"><path d="M20 6 9 17l-5-5"/></svg>
+    <span id="toast-text">Copied to clipboard</span>
+  </div>
+
+  <script>
+    let currentTab = 'matched';
+    let currentViewMode = localStorage.getItem('ojp_view_mode') || 'compact';
+    let sortDir = 'desc';
+    let currentJobs = [];
+    let currentJobsMap = {};
+    let activeModalJobId = null;
+    let searchDebounceTimer = null;
+    let pollTimer = null;
+
+    const ICON_COPY = `<svg class="ui-icon" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>`;
+    const ICON_CHECK = `<svg class="ui-icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>`;
+    const ICON_ARROW = `<svg class="ui-icon m-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      localStorage.setItem('ojp_view_mode', mode);
+      const btnDetailed = document.getElementById('view-mode-detailed');
+      const btnCompact = document.getElementById('view-mode-compact');
+      if (btnDetailed) btnDetailed.classList.toggle('active', mode === 'detailed');
+      if (btnCompact) btnCompact.classList.toggle('active', mode === 'compact');
+      renderJobsList(currentJobs);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = msg;
+      t.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getScoreFillClass(score) {
+      if (score >= 80) return 'score-progress__fill--high';
+      if (score >= 65) return 'score-progress__fill--good';
+      if (score >= 50) return 'score-progress__fill--mod';
+      return 'score-progress__fill--low';
+    }
+
+    function scoreProgressBarHtml(score, width = '72px') {
+      const fillCls = getScoreFillClass(score);
+      const clamped = Math.min(100, Math.max(0, Number(score) || 0));
+      return `
+        <div class="score-progress" style="width: ${width};" title="Suitability score: ${clamped}%">
+          <div class="score-progress__track">
+            <div class="score-progress__fill ${fillCls}" style="width: ${clamped}%;"></div>
+          </div>
+        </div>`;
+    }
+
+    function scoreBadgeHtml(score, tier, withProgress = true) {
+      let cls = 'badge';
+      if (score >= 80) cls = 'badge badge--high';
+      else if (score >= 65) cls = 'badge badge--good';
+      else if (score >= 50) cls = 'badge badge--mod';
+
+      const bar = withProgress ? scoreProgressBarHtml(score, '64px') : '';
+
+      return `
+        <div class="score-badge-wrap">
+          <span class="${cls}"><span class="mono">${score}%</span> • ${escapeHtml(tier)}</span>
+          ${bar}
+        </div>`;
+    }
+
+    function regionBadgeHtml(region) {
+      const label = region === 'Global' ? 'Global' : `${region} Market`;
+      return `<span class="badge mono">${escapeHtml(label)}</span>`;
+    }
+
+    function buildPromptPayload(job, slashCommand = '/onlinejobs-proposal-generator') {
+      const skills = (job.skills_tags || []).join(', ') || 'None listed';
+      const matched = (job.matched_skills || []).join(', ') || 'General Admin / VA';
+      const gaps = (job.missing_skills || []).join(', ') || 'None detected';
+      const hrs = job.hours_per_week ? ` (${job.hours_per_week} hrs/week)` : '';
+      return `${slashCommand}
+
+Target Position: ${job.title}
+Employer / Client: ${job.employer} (${job.client_region} Client)
+Work Arrangement: ${job.arrangement}${hrs}
+Salary: ${job.salary}
+Post Date: ${job.posted_at}
+OnlineJobs.ph URL: ${job.url}
+Required Skill Tags: ${skills}
+Suitability Score: ${job.match_score}% (${job.suitability_tier} — ${job.role_category})
+Candidate Matched Strengths: ${matched}
+Potential Unlisted Tools / Gaps: ${gaps}
+
+Full Job Description:
+${job.description || job.description_snippet || ''}`;
+    }
+
+    async function copyCommandAndJd(jobId, slashCommand = '/onlinejobs-proposal-generator', btnEl = null, ev = null) {
+      if (ev) ev.stopPropagation();
+      const job = currentJobsMap[String(jobId)];
+      if (!job) return;
+      const text = buildPromptPayload(job, slashCommand);
+
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+
+      /* motion.md: Copy button glyph swaps to a check in place, holds 1.5 to 2s, returns */
+      if (btnEl) {
+        const originalHtml = btnEl.innerHTML;
+        btnEl.innerHTML = `${ICON_CHECK}<span>Copied to clipboard</span>`;
+        setTimeout(() => { btnEl.innerHTML = originalHtml; }, 1700);
+      }
+      showToast(`Copied "${slashCommand} + JD" for ${job.title.slice(0, 38)}`);
+    }
+
+    async function updateStatusInline(jobId, newStatus, ev = null) {
+      if (ev) ev.stopPropagation();
+      try {
+        const res = await fetch(`/api/jobs/${encodeURIComponent(jobId)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: newStatus })
+        });
+        if (res.ok) {
+          const updated = await res.json();
+          currentJobsMap[String(jobId)] = updated;
+          showToast(`Status updated to ${newStatus}`);
+          loadStats();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderJobsList(jobs) {
+      const container = document.getElementById('jobs-list');
+      document.getElementById('visible-jobs-count').textContent = jobs.length;
+
+      if (!jobs.length) {
+        container.innerHTML = `
+          <div class="panel-box" style="text-align: center; padding: 48px 24px;">
+            <div style="font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 6px;">No postings match these filters</div>
+            <p style="font-size: 14px; color: var(--muted); margin: 0 0 16px 0;">Clear one or more filters or switch to all scraped jobs.</p>
+            <button onclick="resetFilters()" class="btn btn--secondary">Reset filters</button>
+          </div>`;
+        return;
+      }
+
+      const statuses = ['New', 'Shortlisted', 'Tailoring', 'Applied', 'Interviewing', 'Offer', 'Archived'];
+
+      if (currentViewMode === 'compact') {
+        container.innerHTML = `
+          <div class="compact-table-wrap">
+            <table class="compact-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 140px;">Suitability Score</th>
+                  <th style="min-width: 280px;">Role & Employer</th>
+                  <th style="min-width: 100px;">Region</th>
+                  <th style="min-width: 120px;">Arrangement</th>
+                  <th style="min-width: 120px;">Est. Pay</th>
+                  <th style="min-width: 130px;">Scraped</th>
+                  <th style="min-width: 130px;">Status</th>
+                  <th style="min-width: 110px; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${jobs.map(job => {
+                  let isRecentScrape = false;
+                  if (job.last_scraped_at) {
+                    const scrapeTime = new Date(job.last_scraped_at.replace(' ', 'T') + '+08:00').getTime();
+                    if (!isNaN(scrapeTime) && (Date.now() - scrapeTime <= 5 * 3600 * 1000 && Date.now() - scrapeTime >= -60000)) {
+                      isRecentScrape = true;
+                    }
+                  }
+                  const recentBadge = isRecentScrape
+                    ? `<span class="badge mono" style="color: var(--action); border-color: var(--action); font-weight: 600; font-size: 11px; height: 20px;">⚡ &lt;5h</span>`
+                    : '';
+
+                  const flagBadge = (job.red_flags && job.red_flags.length)
+                    ? `<span class="badge badge--warn" style="font-size: 11px; height: 20px;">${job.red_flags.length} warn</span>`
+                    : '';
+
+                  const hrsText = job.hours_per_week ? ` (${escapeHtml(job.hours_per_week)}h/wk)` : '';
+                  const statusOptions = statuses.map(st =>
+                    `<option value="${st}" ${job.status === st ? 'selected' : ''}>${st}</option>`
+                  ).join('');
+
+                  const fillCls = getScoreFillClass(job.match_score);
+                  const clamped = Math.min(100, Math.max(0, Number(job.match_score) || 0));
+
+                  return `
+                  <tr class="compact-row" onclick="openJobModal('${escapeHtml(job.job_id)}')">
+                    <td>
+                      <div class="compact-score-cell">
+                        <div class="compact-score-top">
+                          <span class="compact-score-num mono">${clamped}%</span>
+                          <span class="compact-score-tier">${escapeHtml(job.suitability_tier)}</span>
+                        </div>
+                        <div class="score-progress" style="width: 100%;" title="Suitability score: ${clamped}% (${escapeHtml(job.suitability_tier)})">
+                          <div class="score-progress__track">
+                            <div class="score-progress__fill ${fillCls}" style="width: ${clamped}%;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="compact-title-cell">
+                        <span class="compact-title-link">${escapeHtml(job.title)}</span>
+                        <div class="compact-employer-sub">
+                          <strong style="color: var(--ink);">${escapeHtml(job.employer)}</strong>
+                          <span class="mono" style="font-size: 11px;">#${escapeHtml(job.job_id)}</span>
+                          ${recentBadge}
+                          ${flagBadge}
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      ${regionBadgeHtml(job.client_region)}
+                      <div style="font-size: 11px; color: var(--muted); margin-top: 3px;">${escapeHtml(job.role_category)}</div>
+                    </td>
+                    <td>
+                      <span class="badge">${escapeHtml(job.arrangement)}</span>
+                      <div class="mono" style="font-size: 11px; color: var(--muted); margin-top: 3px;">${escapeHtml(hrsText)}</div>
+                    </td>
+                    <td>
+                      <span class="mono" style="font-weight: 600; font-size: 13px; color: var(--ink);">${escapeHtml(job.salary)}</span>
+                    </td>
+                    <td>
+                      <div class="mono" style="font-size: 12px; color: var(--ink);">${escapeHtml(job.last_scraped_at ? job.last_scraped_at.substring(5, 16) : (job.posted_at || 'N/A'))}</div>
+                      <div class="mono" style="font-size: 11px; color: var(--muted);">Post: ${escapeHtml(job.posted_at ? job.posted_at.substring(5, 10) : 'N/A')}</div>
+                    </td>
+                    <td onclick="event.stopPropagation()">
+                      <select
+                        aria-label="Job application status"
+                        onchange="updateStatusInline('${escapeHtml(job.job_id)}', this.value, event)"
+                        class="select-control"
+                        style="height: 32px; font-size: 12px; font-weight: 500; min-width: 115px;"
+                      >
+                        ${statusOptions}
+                      </select>
+                    </td>
+                    <td onclick="event.stopPropagation()">
+                      <div class="compact-actions-cell">
+                        <button
+                          onclick="copyCommandAndJd('${escapeHtml(job.job_id)}', '/onlinejobs-proposal-generator', this, event)"
+                          class="btn btn--ink"
+                          title="Copy /onlinejobs-proposal-generator + JD"
+                          style="height: 32px; width: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;"
+                        >
+                          ${ICON_COPY}
+                        </button>
+                        <a
+                          href="${escapeHtml(job.url)}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn btn--secondary"
+                          title="Open job post"
+                          style="height: 32px; width: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;"
+                        >
+                          ${ICON_ARROW}
+                        </a>
+                      </div>
+                    </td>
+                  </tr>`;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = jobs.map(job => {
+        const matchedChips = (job.matched_skills || []).slice(0, 5).map(s =>
+          `<span class="skill-chip">${escapeHtml(s)}</span>`
+        ).join('');
+
+        const gapChips = (job.missing_skills || []).slice(0, 2).map(g =>
+          `<span class="skill-chip skill-chip--gap">Gap: ${escapeHtml(g)}</span>`
+        ).join('');
+
+        const flagBadge = (job.red_flags && job.red_flags.length)
+          ? `<span class="badge badge--warn">${job.red_flags.length} warning${job.red_flags.length > 1 ? 's' : ''}</span>`
+          : '';
+
+        let isRecentScrape = false;
+        if (job.last_scraped_at) {
+          const scrapeTime = new Date(job.last_scraped_at.replace(' ', 'T') + '+08:00').getTime();
+          if (!isNaN(scrapeTime) && (Date.now() - scrapeTime <= 5 * 3600 * 1000 && Date.now() - scrapeTime >= -60000)) {
+            isRecentScrape = true;
+          }
+        }
+        const recentBadge = isRecentScrape
+          ? `<span class="badge mono" style="color: var(--action); border-color: var(--action); font-weight: 600;">⚡ Scraped &lt;5h</span>`
+          : '';
+
+        const hrsText = job.hours_per_week ? ` (${escapeHtml(job.hours_per_week)}h/wk)` : '';
+        const statusOptions = statuses.map(st =>
+          `<option value="${st}" ${job.status === st ? 'selected' : ''}>${st}</option>`
+        ).join('');
+
+        return `
+        <article class="job-card" onclick="openJobModal('${escapeHtml(job.job_id)}')">
+          <div>
+            <div class="job-card__top">
+              ${scoreBadgeHtml(job.match_score, job.suitability_tier, true)}
+              ${regionBadgeHtml(job.client_region)}
+              <span class="badge">${escapeHtml(job.role_category)}</span>
+              <span class="badge">${escapeHtml(job.arrangement)}${hrsText}</span>
+              ${recentBadge}
+              ${flagBadge}
+            </div>
+
+            <h3 class="job-card__title">${escapeHtml(job.title)}</h3>
+
+            <div class="job-card__meta">
+              <span>Employer: <strong>${escapeHtml(job.employer)}</strong></span>
+              <span>Pay: <strong class="mono">${escapeHtml(job.salary)}</strong></span>
+              <span>Posted: <span class="mono">${escapeHtml(job.posted_at || job.date_updated || 'N/A')}</span></span>
+              <span>Scraped: <span class="mono">${escapeHtml(job.last_scraped_at || 'N/A')}</span></span>
+              <span class="mono" style="font-size: 12px;">#${escapeHtml(job.job_id)}</span>
+            </div>
+
+            <p class="job-card__desc">${escapeHtml(job.description || job.description_snippet || '')}</p>
+
+            <div class="skill-row">
+              ${matchedChips}
+              ${gapChips}
+            </div>
+          </div>
+
+          <div class="job-card__actions" onclick="event.stopPropagation()">
+            <select
+              aria-label="Job application status"
+              onchange="updateStatusInline('${escapeHtml(job.job_id)}', this.value, event)"
+              class="select-control"
+              style="height: 36px; font-size: 13px; font-weight: 500;"
+            >
+              ${statusOptions}
+            </select>
+
+            <button
+              onclick="copyCommandAndJd('${escapeHtml(job.job_id)}', '/onlinejobs-proposal-generator', this, event)"
+              class="btn btn--ink"
+              style="width: 100%; height: 38px; font-size: 13px;"
+            >
+              ${ICON_COPY}
+              <span>Copy /onlinejobs-proposal-generator + JD</span>
+            </button>
+
+            <a
+              href="${escapeHtml(job.url)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn--secondary"
+              style="width: 100%; height: 36px; font-size: 13px;"
+            >
+              <span>Open job post</span>
+              ${ICON_ARROW}
+            </a>
+          </div>
+        </article>`;
+      }).join('');
+    }
+
+    async function loadJobs() {
+      const view = currentTab;
+      const params = new URLSearchParams({
+        view,
+        date_filter: document.getElementById('filter-date') ? document.getElementById('filter-date').value : 'All',
+        client_region: document.getElementById('filter-region').value,
+        role_category: document.getElementById('filter-category').value,
+        status: document.getElementById('filter-status').value,
+        arrangement: document.getElementById('filter-arrangement').value,
+        search: document.getElementById('filter-search').value,
+        sort_by: document.getElementById('sort-by').value,
+        sort_dir: sortDir
+      });
+
+      try {
+        const res = await fetch(`/api/jobs?${params.toString()}`);
+        const data = await res.json();
+        currentJobs = data.jobs || [];
+        currentJobs.forEach(j => { currentJobsMap[String(j.job_id)] = j; });
+        renderJobsList(currentJobs);
+      } catch (e) {
+        console.error('Error loading jobs:', e);
+      }
+    }
+
+    function debounceLoadJobs() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => loadJobs(), 200);
+    }
+
+    function toggleSortDir() {
+      sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+      document.getElementById('sort-dir-btn').textContent = sortDir === 'desc' ? '↓' : '↑';
+      loadJobs();
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      ['matched', 'last5h', 'all', 'schedule'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) btn.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+
+      if (tab === 'schedule') {
+        document.getElementById('jobs-view-container').classList.add('hidden');
+        document.getElementById('schedule-view-container').classList.remove('hidden');
+        loadStats();
+      } else {
+        document.getElementById('schedule-view-container').classList.add('hidden');
+        document.getElementById('jobs-view-container').classList.remove('hidden');
+        if (tab === 'last5h' && document.getElementById('sort-by').value === 'match_score') {
+          document.getElementById('sort-by').value = 'last_scraped_at';
+        }
+        loadJobs();
+      }
+    }
+
+    function filterByRegion(region) {
+      document.getElementById('filter-region').value = region;
+      if (currentTab === 'schedule') switchTab('matched');
+      else loadJobs();
+    }
+
+    function filterByStatus(status) {
+      document.getElementById('filter-status').value = status;
+      if (currentTab === 'schedule') switchTab('matched');
+      else loadJobs();
+    }
+
+    function resetFilters() {
+      document.getElementById('filter-search').value = '';
+      if (document.getElementById('filter-date')) document.getElementById('filter-date').value = 'All';
+      document.getElementById('filter-region').value = 'All';
+      document.getElementById('filter-category').value = 'All';
+      document.getElementById('filter-status').value = 'All';
+      document.getElementById('filter-arrangement').value = 'All';
+      document.getElementById('sort-by').value = currentTab === 'last5h' ? 'last_scraped_at' : 'match_score';
+      sortDir = 'desc';
+      document.getElementById('sort-dir-btn').textContent = '↓';
+      loadJobs();
+    }
+
+    function openJobModal(jobId) {
+      const job = currentJobsMap[String(jobId)];
+      if (!job) return;
+      activeModalJobId = String(jobId);
+
+      let isRecentScrape = false;
+      if (job.last_scraped_at) {
+        const scrapeTime = new Date(job.last_scraped_at.replace(' ', 'T') + '+08:00').getTime();
+        if (!isNaN(scrapeTime) && (Date.now() - scrapeTime <= 5 * 3600 * 1000 && Date.now() - scrapeTime >= -60000)) {
+          isRecentScrape = true;
+        }
+      }
+      const modalRecentBadge = isRecentScrape
+        ? `<span class="badge mono" style="color: var(--action); border-color: var(--action); font-weight: 600;">⚡ Scraped &lt;5h</span>`
+        : '';
+
+      document.getElementById('modal-badges').innerHTML = `
+        ${scoreBadgeHtml(job.match_score, job.suitability_tier)}
+        ${regionBadgeHtml(job.client_region)}
+        <span class="badge">${escapeHtml(job.role_category)}</span>
+        <span class="badge mono">${escapeHtml(job.peak_window)}</span>
+        ${modalRecentBadge}
+      `;
+      document.getElementById('modal-title').textContent = job.title;
+      const hrs = job.hours_per_week ? ` (${job.hours_per_week} hrs/week)` : '';
+      document.getElementById('modal-subtitle').innerHTML = `
+        Employer: <strong style="color: var(--ink);">${escapeHtml(job.employer)}</strong> &nbsp;•&nbsp;
+        Salary: <strong class="mono" style="color: var(--ink);">${escapeHtml(job.salary)}</strong> &nbsp;•&nbsp;
+        Arrangement: <strong style="color: var(--ink);">${escapeHtml(job.arrangement)}${escapeHtml(hrs)}</strong> &nbsp;•&nbsp;
+        Posted: <span class="mono">${escapeHtml(job.posted_at || job.date_updated)}</span> &nbsp;•&nbsp;
+        Scraped: <span class="mono">${escapeHtml(job.last_scraped_at || 'N/A')}</span>
+      `;
+
+      document.getElementById('modal-eval-summary').textContent = job.evaluation_summary || '';
+
+      document.getElementById('modal-matched-skills').innerHTML = (job.matched_skills || []).length
+        ? job.matched_skills.map(s => `<span class="skill-chip">${escapeHtml(s)}</span>`).join('')
+        : '<span style="font-size: 13px; color: var(--muted);">None specifically matched</span>';
+
+      document.getElementById('modal-missing-skills').innerHTML = (job.missing_skills || []).length
+        ? job.missing_skills.map(s => `<span class="skill-chip skill-chip--gap">${escapeHtml(s)}</span>`).join('')
+        : '<span style="font-size: 13px; color: var(--fit-high-ink);">No tool gaps detected</span>';
+
+      const rfBox = document.getElementById('modal-red-flags-box');
+      if (job.red_flags && job.red_flags.length) {
+        rfBox.classList.remove('hidden');
+        document.getElementById('modal-red-flags').innerHTML = job.red_flags.map(f =>
+          `<span class="badge badge--warn">${escapeHtml(f)}</span>`
+        ).join('');
+      } else {
+        rfBox.classList.add('hidden');
+      }
+
+      document.getElementById('modal-status').value = job.status || 'New';
+      document.getElementById('modal-notes').value = job.notes || '';
+      document.getElementById('modal-description').textContent = job.description || job.description_snippet || '';
+      document.getElementById('modal-employer-meta').textContent =
+        job.employer_member_since ? `Member since ${job.employer_member_since} • Total posts: ${job.employer_total_posts || 'N/A'}` : '';
+
+      const copyTailorBtn = document.getElementById('modal-btn-copy-tailor');
+      copyTailorBtn.onclick = () => copyCommandAndJd(job.job_id, '/onlinejobs-proposal-generator', copyTailorBtn);
+
+      const copyAnalyzerBtn = document.getElementById('modal-btn-copy-analyzer');
+      copyAnalyzerBtn.onclick = () => copyCommandAndJd(job.job_id, '/resume-tailor', copyAnalyzerBtn);
+
+      document.getElementById('modal-btn-open-url').href = job.url;
+
+      const propContainer = document.getElementById('mcp-proposal-container');
+      if (propContainer) propContainer.classList.add('hidden');
+      const propBtn = document.getElementById('btn-generate-mcp-proposal');
+      if (propBtn) propBtn.innerHTML = '<span>Draft Tailored Proposal</span>';
+
+      document.getElementById('job-modal').classList.remove('hidden');
+    }
+
+    function closeJobModal() {
+      document.getElementById('job-modal').classList.add('hidden');
+      activeModalJobId = null;
+    }
+
+    async function saveModalStatusAndNotes() {
+      if (!activeModalJobId) return;
+      const status = document.getElementById('modal-status').value;
+      const notes = document.getElementById('modal-notes').value;
+      try {
+        const res = await fetch(`/api/jobs/${encodeURIComponent(activeModalJobId)}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status, notes })
+        });
+        if (res.ok) {
+          const updated = await res.json();
+          currentJobsMap[activeModalJobId] = updated;
+          showToast('Saved status & notes');
+          loadJobs();
+          loadStats();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const stats = await res.json();
+
+        document.getElementById('stat-total-jobs').textContent = stats.total_jobs || 0;
+        document.getElementById('stat-matched-jobs').textContent = stats.matched_jobs || 0;
+        if (document.getElementById('stat-last5h-jobs')) document.getElementById('stat-last5h-jobs').textContent = stats.scraped_last_5h || 0;
+        if (document.getElementById('stat-last5h-matched')) document.getElementById('stat-last5h-matched').textContent = stats.matched_last_5h || 0;
+        document.getElementById('stat-excellent-fits').textContent = stats.excellent_fits || 0;
+        document.getElementById('stat-good-fits').textContent = stats.good_fits || 0;
+        document.getElementById('stat-avg-score').textContent = `Avg ${stats.avg_matched_score || 0}%`;
+
+        document.getElementById('tab-count-matched').textContent = stats.matched_jobs || 0;
+        if (document.getElementById('tab-count-last5h')) document.getElementById('tab-count-last5h').textContent = stats.scraped_last_5h || 0;
+        document.getElementById('tab-count-all').textContent = stats.total_jobs || 0;
+
+        const byReg = stats.by_region || {};
+        document.getElementById('stat-region-us').textContent = byReg['US'] || 0;
+        document.getElementById('stat-region-au').textContent = byReg['AU'] || 0;
+        document.getElementById('stat-region-uk').textContent = byReg['UK'] || 0;
+
+        const bySt = stats.by_status || {};
+        document.getElementById('stat-status-shortlisted').textContent = bySt['Shortlisted'] || 0;
+        document.getElementById('stat-status-tailoring').textContent = bySt['Tailoring'] || 0;
+        document.getElementById('stat-status-applied').textContent = bySt['Applied'] || 0;
+
+        if (stats.schedule) updateScheduleUI(stats.schedule);
+        if (stats.scrape_progress) updateProgressUI(stats.scrape_progress);
+
+        const runs = stats.recent_runs || [];
+        const tbody = document.getElementById('scrape-runs-tbody');
+        if (tbody) {
+          tbody.innerHTML = runs.map(r => `
+            <tr>
+              <td class="mono">#${r.id}</td>
+              <td class="mono">${escapeHtml(r.started_at)}</td>
+              <td class="mono">${escapeHtml(r.completed_at || 'Running')}</td>
+              <td>${escapeHtml(r.trigger_source)}</td>
+              <td>${escapeHtml(r.target_region)}</td>
+              <td class="mono">${r.pages_scraped}</td>
+              <td class="mono">${r.jobs_found}</td>
+              <td class="mono">+${r.new_jobs}</td>
+              <td class="mono">${r.matched_jobs}</td>
+              <td><span class="badge ${r.status === 'completed' ? 'badge--high' : ''}">${escapeHtml(r.status)}</span></td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        console.error('Error loading stats:', e);
+      }
+    }
+
+    function updateScheduleUI(sched) {
+      const next = sched.next_peak;
+      if (next && next.next_window) {
+        document.getElementById('next-peak-region').textContent = next.next_window.region;
+        document.getElementById('next-peak-text').textContent =
+          `${next.next_window.time_pht} (${next.countdown_human})`;
+      }
+
+      const dot = document.getElementById('scheduler-dot');
+      const toggleBtn = document.getElementById('btn-toggle-scheduler');
+      if (sched.enabled) {
+        dot.className = 'status-dot';
+        if (toggleBtn) toggleBtn.textContent = 'Pause automatic runs';
+      } else {
+        dot.className = 'status-dot status-dot--paused';
+        if (toggleBtn) toggleBtn.textContent = 'Enable automatic runs';
+      }
+
+      const grid = document.getElementById('peak-windows-grid');
+      if (grid && sched.peak_windows) {
+        const nextId = next && next.next_window ? next.next_window.id : '';
+        grid.innerHTML = sched.peak_windows.map(w => {
+          const isNext = w.id === nextId;
+          return `
+            <div class="peak-tile ${isNext ? 'peak-tile--next' : ''}">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span class="badge mono">${escapeHtml(w.region)} Market</span>
+                ${isNext ? '<span class="badge badge--good">Next run</span>' : ''}
+              </div>
+              <div class="mono" style="font-size: 18px; font-weight: 500; color: var(--ink);">${escapeHtml(w.time_pht)}</div>
+              <div style="font-size: 14px; font-weight: 500; color: var(--ink-body); margin-top: 4px;">${escapeHtml(w.label)}</div>
+              <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">Client local: ${escapeHtml(w.client_local_time)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function updateProgressUI(prog) {
+      const bar = document.getElementById('scrape-progress-bar');
+      const btn = document.getElementById('btn-scrape-now');
+      const btnLabel = document.getElementById('scrape-btn-label');
+
+      if (prog && prog.is_running) {
+        bar.classList.remove('hidden');
+        btn.disabled = true;
+        btnLabel.textContent = 'Scraping 10 pages...';
+
+        const stageMap = {
+          'authenticating': 'Authenticating on OnlineJobs.ph...',
+          'scraping_pages': `Scraping search page ${prog.current_page} of ${prog.total_pages}...`,
+          'enriching_and_evaluating': `Enriching full job descriptions (${prog.jobs_enriched}/${prog.jobs_discovered})...`,
+          'saving_to_sqlite': 'Saving enriched postings to SQLite...'
+        };
+        document.getElementById('scrape-stage-label').textContent = stageMap[prog.stage] || 'Running automation...';
+        document.getElementById('scrape-progress-counts').textContent =
+          `Page ${prog.current_page}/${prog.total_pages} • ${prog.jobs_discovered} discovered • ${prog.jobs_enriched} enriched`;
+
+        let pct = 10;
+        if (prog.stage === 'scraping_pages') {
+          pct = 10 + Math.round((prog.current_page / Math.max(1, prog.total_pages)) * 35);
+        } else if (prog.stage === 'enriching_and_evaluating' && prog.jobs_discovered > 0) {
+          pct = 45 + Math.round((prog.jobs_enriched / prog.jobs_discovered) * 50);
+        } else if (prog.stage === 'saving_to_sqlite') {
+          pct = 96;
+        }
+        document.getElementById('scrape-progress-fill').style.width = `${pct}%`;
+
+        if (!pollTimer) pollTimer = setInterval(pollScrapeStatus, 1500);
+      } else {
+        bar.classList.add('hidden');
+        btn.disabled = false;
+        btnLabel.textContent = 'Scrape 10 pages now';
+        if (pollTimer) {
+          clearInterval(pollTimer);
+          pollTimer = null;
+          loadStats();
+          loadJobs();
+        }
+      }
+    }
+
+    async function pollScrapeStatus() {
+      try {
+        const res = await fetch('/api/scrape/status');
+        const data = await res.json();
+        updateProgressUI(data.progress);
+        if (data.schedule) updateScheduleUI(data.schedule);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function triggerScrapeNow() {
+      try {
+        showToast('Started 10-page scrape & enrichment run');
+        updateProgressUI({ is_running: true, stage: 'authenticating', current_page: 0, total_pages: 10, jobs_discovered: 0, jobs_enriched: 0 });
+        const res = await fetch('/api/scrape', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pages: 10, target_region: 'US/UK/AU', trigger_source: 'web-ui', sync: true })
+        });
+        const data = await res.json();
+        if (data.status === 'completed') {
+          updateProgressUI({ is_running: false });
+          showToast(`Completed: ${data.jobs_found} scraped (${data.new_jobs} new, ${data.matched_jobs} matched)`);
+          loadStats();
+          loadJobs();
+        } else if (data.progress) {
+          updateProgressUI(data.progress);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function toggleScheduler() {
+      try {
+        const res = await fetch('/api/schedule/toggle', { method: 'POST', body: '{}' });
+        const sched = await res.json();
+        updateScheduleUI(sched);
+        showToast(sched.enabled ? 'Automatic peak schedule enabled' : 'Automatic peak schedule paused');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    let mcpInfoCache = null;
+
+    async function openMcpModal() {
+      document.getElementById('mcp-modal').classList.remove('hidden');
+      if (!mcpInfoCache) {
+        try {
+          const res = await fetch('/api/mcp/info');
+          mcpInfoCache = await res.json();
+          renderMcpConfigs(mcpInfoCache);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function closeMcpModal() {
+      document.getElementById('mcp-modal').classList.add('hidden');
+    }
+
+    function switchMcpTab(tab) {
+      ['claude', 'cursor', 'antigravity', 'sse', 'tools'].forEach(t => {
+        const pane = document.getElementById(`mcp-pane-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (pane) pane.classList.toggle('hidden', t !== tab);
+        if (btn) btn.classList.toggle('subnav-btn--active', t === tab);
+      });
+    }
+
+    function renderMcpConfigs(info) {
+      if (!info || !info.configs) return;
+      document.getElementById('mcp-config-claude').textContent = JSON.stringify(info.configs.claude_desktop, null, 2);
+      document.getElementById('mcp-config-cursor').textContent = JSON.stringify(info.configs.cursor, null, 2);
+      document.getElementById('mcp-config-antigravity').textContent = JSON.stringify(info.configs.antigravity, null, 2);
+      document.getElementById('mcp-config-sse').textContent = JSON.stringify(info.configs.sse_http, null, 2);
+
+      const toolsList = document.getElementById('mcp-tools-list');
+      if (toolsList && info.tools) {
+        toolsList.innerHTML = info.tools.map(t => `
+          <div style="background: var(--g-main); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 14px;">
+            <div class="mono" style="font-weight: 600; font-size: 13px; color: var(--ink);">${escapeHtml(t.name)}()</div>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 3px;">${escapeHtml(t.description)}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function copyElementText(elId, btn) {
+      const text = document.getElementById(elId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = `${ICON_CHECK} <span>Copied</span>`;
+        setTimeout(() => { btn.innerHTML = orig; }, 1800);
+        showToast('Config copied to clipboard');
+      });
+    }
+
+    async function loadMcpProposalForModal() {
+      if (!activeModalJobId) return;
+      const btn = document.getElementById('btn-generate-mcp-proposal');
+      btn.innerHTML = '<span>Generating proposal...</span>';
+      try {
+        const res = await fetch(`/api/mcp/proposal/${encodeURIComponent(activeModalJobId)}`);
+        if (!res.ok) throw new Error('Proposal generation failed');
+        const data = await res.json();
+
+        document.getElementById('mcp-proposal-subject').value = data.subject_line || '';
+        document.getElementById('mcp-proposal-text').value = data.proposal_text || '';
+        document.getElementById('mcp-proposal-wordcount').textContent = `${data.word_count} words • 100% Grounded in Verified Candidate Profile`;
+
+        const audit = data.screening_audit || {};
+        let metaHtml = `<strong>Target Channel:</strong> ${escapeHtml(audit.submission_channel || 'OnlineJobs.ph Message')}`;
+        if (audit.secret_codes && audit.secret_codes.length > 0) {
+          metaHtml += ` • <span style="color: var(--fit-high-ink); font-weight: 600;">Secret Code detected: "${escapeHtml(audit.secret_codes[0])}"</span>`;
+        }
+        if (audit.email_submission) {
+          metaHtml += ` • <a href="mailto:${escapeHtml(audit.email_submission)}" style="color: var(--action); text-decoration: underline;">Send directly via Email (${escapeHtml(audit.email_submission)})</a>`;
+        }
+        if (audit.form_submission) {
+          metaHtml += ` • <a href="${escapeHtml(audit.form_submission)}" target="_blank" rel="noopener noreferrer" style="color: var(--action); text-decoration: underline;">Open External Form</a>`;
+        }
+        document.getElementById('mcp-proposal-meta').innerHTML = metaHtml;
+
+        document.getElementById('mcp-proposal-container').classList.remove('hidden');
+        btn.innerHTML = '<span>Regenerate Proposal</span>';
+      } catch (e) {
+        btn.innerHTML = '<span>Failed - Retry</span>';
+        console.error(e);
+      }
+    }
+
+    function copyGeneratedProposal() {
+      const subject = document.getElementById('mcp-proposal-subject').value;
+      const body = document.getElementById('mcp-proposal-text').value;
+      const full = `Subject: ${subject}\n\n${body}`;
+      navigator.clipboard.writeText(full).then(() => {
+        showToast('Proposal copied to clipboard');
+      });
+    }
+
+    async function applyJobWithMcpProposal() {
+      if (!activeModalJobId) return;
+      const curNotes = document.getElementById('modal-notes').value || '';
+      const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+      const updatedNotes = curNotes ? `${curNotes} | Applied on ${dateStr} with MCP proposal` : `Applied on ${dateStr} with tailored MCP proposal.`;
+
+      document.getElementById('modal-status').value = 'Applied';
+      document.getElementById('modal-notes').value = updatedNotes;
+      await saveModalStatusAndNotes();
+      showToast('Job marked as Applied & saved to database!');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeJobModal();
+        closeMcpModal();
+      }
+    });
+
+    setViewMode(currentViewMode);
+    loadStats();
+    loadJobs();
+    setInterval(loadStats, 30000);
+  </script>
+</body>
+</html>
