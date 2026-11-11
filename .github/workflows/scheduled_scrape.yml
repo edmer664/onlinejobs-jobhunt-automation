@@ -1,0 +1,179 @@
+name: Scheduled Multi-Peak Job Scrape & Evaluation
+
+'on':
+  schedule:
+    # Multi-peak hiring windows:
+    # AU morning peak: 23:00 UTC (07:00 AWST / 10:00 AEST / 07:00 PHT)
+    - cron: '0 23 * * *'
+    # UK morning peak: 08:00 UTC (08:00 GMT / 09:00 BST / 16:00 PHT)
+    - cron: '0 8 * * *'
+    # US morning peak: 14:00 UTC (09:00 EST / 06:00 PST / 22:00 PHT)
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: 'Number of search result pages to scrape'
+        required: false
+        default: '5'
+      region:
+        description: 'Target region filter (AU, UK, US, or US/UK/AU)'
+        required: false
+        default: 'US/UK/AU'
+        type: choice
+        options:
+          - US/UK/AU
+          - AU
+          - UK
+          - US
+
+concurrency:
+  group: scheduled-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  scrape-and-evaluate:
+    name: Scrape & Evaluate Remote Listings
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Playwright Chromium & System Dependencies
+        run: |
+          playwright install --with-deps chromium
+
+      - name: Determine Target Region
+        id: region-select
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            CURRENT_HOUR=$(date -u +%H)
+            echo "Current UTC hour: $CURRENT_HOUR"
+            if [ "$CURRENT_HOUR" -ge 22 ] || [ "$CURRENT_HOUR" -le 0 ]; then
+              TARGET_REGION="AU"
+            elif [ "$CURRENT_HOUR" -ge 7 ] && [ "$CURRENT_HOUR" -le 9 ]; then
+              TARGET_REGION="UK"
+            elif [ "$CURRENT_HOUR" -ge 13 ] && [ "$CURRENT_HOUR" -le 15 ]; then
+              TARGET_REGION="US"
+            else
+              TARGET_REGION="US/UK/AU"
+            fi
+          else
+            TARGET_REGION="${{ github.event.inputs.region || 'US/UK/AU' }}"
+          fi
+          echo "TARGET_REGION=$TARGET_REGION" >> $GITHUB_ENV
+          echo "Selected region: $TARGET_REGION"
+
+      - name: Initialize SQLite Database
+        run: |
+          python -c "from src.db import init_db; init_db('jobs.db')"
+
+      - name: Execute Scraper & Evaluator
+        env:
+          OJP_EMAIL: ${{ secrets.OJP_EMAIL }}
+          OJP_PASSWORD: ${{ secrets.OJP_PASSWORD }}
+        run: |
+          PAGES="${{ github.event.inputs.pages || '5' }}"
+          echo "Launching scraper: pages=$PAGES, region=$TARGET_REGION"
+          python src/scraper.py --pages "$PAGES" --region "$TARGET_REGION" --db-path jobs.db
+
+      - name: Generate Summary Report & Metrics
+        if: always()
+        run: |
+          python - << 'EOF'
+          import os
+          import sqlite3
+
+          db_path = "jobs.db"
+          if not os.path.exists(db_path):
+              print("Database not found, skipping summary generation.")
+              exit(0)
+
+          conn = sqlite3.connect(db_path)
+          conn.row_factory = sqlite3.Row
+          cur = conn.cursor()
+
+          # Query latest scrape run
+          cur.execute("SELECT * FROM scrape_runs ORDER BY id DESC LIMIT 1")
+          run = cur.fetchone()
+
+          # Query aggregate statistics
+          cur.execute("SELECT COUNT(*) FROM jobs")
+          total_jobs = cur.fetchone()[0]
+
+          cur.execute("SELECT suitability_tier, COUNT(*) FROM jobs GROUP BY suitability_tier")
+          tier_counts = dict(cur.fetchall())
+
+          cur.execute("SELECT COUNT(*) FROM jobs WHERE is_matched = 1")
+          matched_jobs = cur.fetchone()[0]
+
+          # Query top 5 matches
+          cur.execute("""
+              SELECT title, employer, suitability_score, suitability_tier, client_region
+              FROM jobs
+              ORDER BY suitability_score DESC, date_extracted DESC
+              LIMIT 5
+          """)
+          top_jobs = cur.fetchall()
+          conn.close()
+
+          lines = []
+          lines.append("## 🚀 Scheduled Job Scrape & Evaluation Report\n")
+          if run:
+              lines.append(f"- **Trigger Source**: `{run['trigger_source']}`")
+              lines.append(f"- **Target Region**: `{run['target_region']}`")
+              lines.append(f"- **Run Status**: `{run['status']}`")
+              lines.append(f"- **Pages Scraped**: {run['pages_scraped']}")
+              lines.append(f"- **Discovered Listings**: {run['jobs_found']} ({run['new_jobs']} new)")
+              lines.append(f"- **Matched Opportunities**: {run['matched_jobs']}\n")
+
+          lines.append("### 📊 Pipeline Metrics")
+          lines.append("| Metric | Value |")
+          lines.append("|---|---|")
+          lines.append(f"| Total Database Listings | {total_jobs} |")
+          lines.append(f"| Total Matched (≥60%) | {matched_jobs} |")
+          lines.append(f"| Excellent Fit (≥80%) | {tier_counts.get('Excellent Fit', 0)} |")
+          lines.append(f"| Good Fit (60–79%) | {tier_counts.get('Good Fit', 0)} |")
+          lines.append(f"| Moderate Fit (50–59%) | {tier_counts.get('Moderate Fit', 0)} |")
+          lines.append(f"| Low Fit (<50%) | {tier_counts.get('Low Fit', 0)} |\n")
+
+          if top_jobs:
+              lines.append("### 🌟 Top Matched Opportunities")
+              lines.append("| Job Title | Employer | Match Score | Tier | Region |")
+              lines.append("|---|---|---|---|---|")
+              for j in top_jobs:
+                  lines.append(f"| {j['title']} | {j['employer']} | {j['suitability_score']}% | {j['suitability_tier']} | {j['client_region']} |")
+              lines.append("")
+
+          report_text = "\n".join(lines)
+          print(report_text)
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as f:
+                  f.write(report_text + "\n")
+          EOF
+
+      - name: Upload Run Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-results-${{ github.run_number }}
+          path: |
+            jobs.db
+          retention-days: 30

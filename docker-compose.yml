@@ -6,8 +6,8 @@ services:
     container_name: jobhunt_opensource
     restart: unless-stopped
     ports:
-      - "5050:5050"
-      - "5055:5055"
+      - "5050:5050"   # Web Dashboard UI & REST API
+      - "5055:5055"   # MCP Server (SSE Transport)
     environment:
       - PORT=5050
       - HOST=0.0.0.0
@@ -16,4 +16,16 @@ services:
     volumes:
       - ./config:/app/config
       - ./jobs.db:/app/jobs.db
-    command: python src/app.py
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:5050/api/stats')\" || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: bash -c "python tools/seed_db.py --seed-file seeds/sample_jobs.json && ./scripts/start_all.sh"
