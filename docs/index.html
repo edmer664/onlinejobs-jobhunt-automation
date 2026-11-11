@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jobhunt_opensource — Zero-Cost Remote Job Hunt &amp; Application Automation</title>
+  <meta name="description" content="100% free, zero-cost, open-source remote job search, screening trap detection, and multi-channel application automation powered by Python and the Model Context Protocol (MCP).">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-link">
+        <span class="brand-name">jobhunt_opensource</span>
+        <span class="brand-badge">v1.0.0</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="#pipeline" class="nav-link">Pipeline</a>
+        <a href="#build-process" class="nav-link">Build &amp; Customize</a>
+        <a href="#sandboxes" class="nav-link">Sandboxes</a>
+        <a href="#zero-cost" class="nav-link">Zero-Cost Matrix</a>
+        <a href="#skill-ecosystem" class="nav-link">Skills</a>
+        <a href="#docs" class="nav-link">Docs</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="https://github.com/your-username/jobhunt_opensource" class="btn btn-outline" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Zero-Cost Remote Job Hunt &amp; Application Automation</h1>
+        <p class="hero-lead">
+          Autonomous scraper, screening trap auditor, and multi-channel proposal engine for remote jobseekers and AI coding agents. 100% free. Zero cloud hosting bills. Zero on-platform connect charges.
+        </p>
+        <div class="hero-actions">
+          <a href="#build-process" class="btn btn-primary">Start Quickstart Guide</a>
+          <a href="#sandboxes" class="btn btn-outline">Try Interactive Sandboxes</a>
+          <a href="https://github.com/your-username/jobhunt_opensource" class="btn btn-outline" target="_blank" rel="noopener">Star on GitHub</a>
+        </div>
+      </div>
+
+      <!-- KEY METRICS STRIP -->
+      <div class="metrics-strip">
+        <div class="metric-card">
+          <div class="metric-value">$0.00 / mo</div>
+          <div class="metric-label">Total Operating Cost</div>
+          <div class="metric-sub">SQLite WAL + Local Compute</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">0 Connects</div>
+          <div class="metric-label">OnlineJobs Points Spent</div>
+          <div class="metric-sub">Email &amp; Form Routing</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">8 MCP Tools</div>
+          <div class="metric-label">AI Agent Interoperability</div>
+          <div class="metric-sub">Claude, Cursor, Antigravity</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">150–250 Words</div>
+          <div class="metric-label">Grounded Proposal Length</div>
+          <div class="metric-sub">Zero Hallucinations Guarantee</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">95.5% Quota Free</div>
+          <div class="metric-label">GitHub Actions Runner Free Tier</div>
+          <div class="metric-sub">Uses ~90 of 2,000 Free Min/Mo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE & PIPELINE SECTION -->
+  <section id="pipeline" class="section pipeline-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">System Architecture &amp; Multi-Channel Pipeline</h2>
+        <p class="section-subtitle">
+          How jobhunt_opensource discovers, scores, audits, and dispatches job applications autonomously without paying subscription or connect fees.
+        </p>
+      </div>
+
+      <div class="pipeline-grid">
+        <!-- LEFT: VISUAL FLOW DIAGRAM -->
+        <div class="pipeline-diagram-card">
+          <div class="diagram-step">
+            <div class="step-badge">Stage 1</div>
+            <div class="step-info">
+              <h3 class="step-title">Playwright &amp; HTTPX Ingestion</h3>
+              <p class="step-desc">Crawls remote postings across AU, UK, and US peak hiring hours. Automatically switches between authenticated session mode and zero-config public mode.</p>
+            </div>
+          </div>
+          <div class="connector-line"></div>
+
+          <div class="diagram-step">
+            <div class="step-badge">Stage 2</div>
+            <div class="step-info">
+              <h3 class="step-title">Suitability &amp; Trap Evaluator</h3>
+              <p class="step-desc">Computes 0–100% suitability match based on your verified skills. Scans description for secret codes, mandatory questions, speedtests, and salary caps.</p>
+            </div>
+          </div>
+          <div class="connector-line"></div>
+
+          <div class="diagram-step">
+            <div class="step-badge">Stage 3</div>
+            <div class="step-info">
+              <h3 class="step-title">Mutually Exclusive Channel Router</h3>
+              <p class="step-desc">Enforces strict routing: if external email or form exists, apply off-platform and spend exactly 0 connects. Prevents duplicate submissions.</p>
+            </div>
+          </div>
+          <div class="connector-line"></div>
+
+          <div class="diagram-step branching-step">
+            <div class="step-badge">Stage 4</div>
+            <div class="step-info">
+              <h3 class="step-title">Autonomous Execution Layer</h3>
+              <div class="branch-grid">
+                <div class="branch-card">
+                  <div class="branch-name">Route A: Direct Email</div>
+                  <div class="branch-tag">0 Connects Spent</div>
+                  <p class="branch-desc">Dispatches tailored application email with attached PDF resume via SMTP or writes a clean local .eml audit file.</p>
+                </div>
+                <div class="branch-card">
+                  <div class="branch-name">Route C: External Forms</div>
+                  <div class="branch-tag">0 Connects Spent</div>
+                  <p class="branch-desc">Automates form completion for Google Forms, ClickUp, Typeform, and RecruitCRM using verified ground-truth profile data.</p>
+                </div>
+                <div class="branch-card">
+                  <div class="branch-name">Zero-Connect Guardrail</div>
+                  <div class="branch-tag">Cost Prevention</div>
+                  <p class="branch-desc">Intercepts standard on-platform listings. Low fit (&lt;60%) jobs are withheld; high-fit jobs are queued for human review.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="connector-line"></div>
+
+          <div class="diagram-step">
+            <div class="step-badge">Stage 5</div>
+            <div class="step-info">
+              <h3 class="step-title">Persistence &amp; Agent Interfaces</h3>
+              <p class="step-desc">Stores records in SQLite WAL mode. Exposes 8 MCP tools and 5 live resources to AI coding assistants, accompanied by a local web dashboard.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: ASYMMETRIC REFERENCE PANEL -->
+        <div class="pipeline-rules-card">
+          <h3 class="card-title">Routing Rules &amp; Cost Guardrails</h3>
+          <div class="rule-item">
+            <span class="rule-num">01</span>
+            <div class="rule-body">
+              <strong>Mutually Exclusive Application Paths</strong>
+              <p>Applications are sent through one channel only: external form, direct email, or on-platform. The engine never double-submits.</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">02</span>
+            <div class="rule-body">
+              <strong>Zero-Connect Priority Allocation</strong>
+              <p>Employers providing external emails or application forms receive direct submissions at $0 cost, preserving paid connects for exclusive roles.</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">03</span>
+            <div class="rule-body">
+              <strong>Masked Email Redaction Protection</strong>
+              <p>Listings with masked addresses (e.g. 'Email: ----------') are never emailed blindly. They are flagged for authenticated session unmasking.</p>
+            </div>
+          </div>
+          <div class="rule-item">
+            <span class="rule-num">04</span>
+            <div class="rule-body">
+              <strong>150–250 Word Length Anchor</strong>
+              <p>Proposals avoid generic cover letter boilerplate. They lead with the employer's code word, cite 2-3 verified achievements with metrics, and anchor remote reliability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD PROCESS & PROFILE CUSTOMIZABILITY WALKTHROUGH -->
+  <section id="build-process" class="section build-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Build Process &amp; Profile Customization</h2>
+        <p class="section-subtitle">
+          Enforcing a reproducible, step-by-step configuration workflow so new users adapt the automation to their verified experience with zero boilerplate leaks.
+        </p>
+      </div>
+
+      <div class="stepper-layout">
+        <!-- STEP SELECTOR TABS -->
+        <div class="stepper-nav" role="tablist">
+          <button class="stepper-btn active" data-step="1" role="tab" aria-selected="true" aria-controls="pane-step-1">
+            <span class="step-index">Step 1</span>
+            <span class="step-label">Initialize Profile</span>
+          </button>
+          <button class="stepper-btn" data-step="2" role="tab" aria-selected="false" aria-controls="pane-step-2">
+            <span class="step-index">Step 2</span>
+            <span class="step-label">Add Verified Facts</span>
+          </button>
+          <button class="stepper-btn" data-step="3" role="tab" aria-selected="false" aria-controls="pane-step-3">
+            <span class="step-index">Step 3</span>
+            <span class="step-label">Run Pre-Flight Validator</span>
+          </button>
+          <button class="stepper-btn" data-step="4" role="tab" aria-selected="false" aria-controls="pane-step-4">
+            <span class="step-index">Step 4</span>
+            <span class="step-label">Configure Environment</span>
+          </button>
+          <button class="stepper-btn" data-step="5" role="tab" aria-selected="false" aria-controls="pane-step-5">
+            <span class="step-index">Step 5</span>
+            <span class="step-label">Run Regression Tests</span>
+          </button>
+        </div>
+
+        <!-- STEP CONTENT PANES -->
+        <div class="stepper-content">
+          <!-- PANE 1 -->
+          <div id="pane-step-1" class="stepper-pane active" role="tabpanel">
+            <h3 class="pane-title">1. Copy the Profile Template</h3>
+            <p class="pane-desc">
+              Create your personal profile file from the documented example template. Your real profile file (<code>config/profile.yaml</code>) is excluded by <code>.gitignore</code> to protect personal data from accidental git commits.
+            </p>
+            <div class="code-terminal">
+              <div class="terminal-bar">
+                <span class="terminal-title">Bash / Terminal</span>
+                <button class="btn-copy" data-target="code-step-1" aria-label="Copy Command">Copy</button>
+              </div>
+              <pre><code id="code-step-1"># Copy example configuration to active candidate profile
+cp config/profile.example.yaml config/profile.yaml
+
+# Alternatively, JSON format is fully supported:
+cp config/profile.example.json config/profile.json</code></pre>
+            </div>
+            <div class="callout-box">
+              <strong>Security Rule:</strong> Never commit your active <code>config/profile.yaml</code> or <code>.env</code> file. The automated test suite verifies 0 PII leaks before allowing production builds.
+            </div>
+          </div>
+
+          <!-- PANE 2 -->
+          <div id="pane-step-2" class="stepper-pane" role="tabpanel" hidden>
+            <h3 class="pane-title">2. Edit Verified Career Facts &amp; Logistics</h3>
+            <p class="pane-desc">
+              Open <code>config/profile.yaml</code> in your editor and replace placeholder strings with your genuine background. The engine strictly restricts generated cover letters to these verified facts.
+            </p>
+            <div class="code-terminal">
+              <div class="terminal-bar">
+                <span class="terminal-title">config/profile.yaml</span>
+                <button class="btn-copy" data-target="code-step-2" aria-label="Copy Snippet">Copy</button>
+              </div>
+              <pre><code id="code-step-2">candidate:
+  name: "Alex Taylor"
+  display_name: "Alex"
+  email: "alex.taylor@example.com"
+  phone: "+1-555-0144"
+  location: "Remote, Worldwide"
+  linkedin: "https://linkedin.com/in/alex-taylor"
+  portfolio_url: "https://portfolio.example.com"
+
+logistics:
+  internet: "300 Mbps Fiber primary with 50 Mbps 5G mobile hotspot backup"
+  power: "1500VA UPS backup battery (4 hours continuous runtime)"
+  hardware: "Dedicated Workstation with Dual Monitors"
+  availability: "Full-time (40 hrs/wk), immediate start across US, UK, or AU timezones"</code></pre>
+            </div>
+          </div>
+
+          <!-- PANE 3 -->
+          <div id="pane-step-3" class="stepper-pane" role="tabpanel" hidden>
+            <h3 class="pane-title">3. Validate Schema &amp; Audit Placeholders</h3>
+            <p class="pane-desc">
+              Run the pre-flight validator tool. It confirms your profile conforms to <code>config/profile.schema.json</code> and verifies zero unedited template tokens remain.
+            </p>
+            <div class="code-terminal">
+              <div class="terminal-bar">
+                <span class="terminal-title">Terminal Verification Command</span>
+                <button class="btn-copy" data-target="code-step-3" aria-label="Copy Command">Copy</button>
+              </div>
+              <pre><code id="code-step-3">python tools/validate_profile.py --config config/profile.yaml</code></pre>
+            </div>
+            <div class="terminal-diff-grid">
+              <div class="diff-box pass-box">
+                <div class="diff-header">Passing Output (Ready to Deploy)</div>
+                <pre class="terminal-log"><code>[VALIDATING] Profile file: config/profile.yaml
+[PASS] Schema validation: Passed successfully.
+[PASS] Candidate email check: 'alex.taylor@example.com'
+[PASS] Placeholder audit: 0 unedited placeholder tokens found.
+[SUCCESS] Candidate profile is valid and ready for job matching.</code></pre>
+              </div>
+              <div class="diff-box fail-box">
+                <div class="diff-header">Failing Output (Safety Blocker)</div>
+                <pre class="terminal-log"><code>[VALIDATING] Profile file: config/profile.yaml
+[FAIL] Unedited placeholders found in active profile:
+  - [YOUR FULL NAME]
+  - [your.email@example.com]
+Remediation: Edit config/profile.yaml with your real verified facts before deploying.</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE 4 -->
+          <div id="pane-step-4" class="stepper-pane" role="tabpanel" hidden>
+            <h3 class="pane-title">4. Set Optional Environment Credentials</h3>
+            <p class="pane-desc">
+              Configure <code>.env</code> if you plan to use direct SMTP email dispatch or authenticated scraping. If left unconfigured, the application runs in public unauthenticated mode and writes draft <code>.eml</code> files.
+            </p>
+            <div class="code-terminal">
+              <div class="terminal-bar">
+                <span class="terminal-title">Bash / Terminal</span>
+                <button class="btn-copy" data-target="code-step-4" aria-label="Copy Command">Copy</button>
+              </div>
+              <pre><code id="code-step-4"># Initialize local environment variables
+cp config/.env.example .env
+
+# Edit .env with your SMTP credentials (optional)
+# SMTP_HOST=smtp.gmail.com
+# SMTP_PORT=587
+# SMTP_USER=your.email@gmail.com
+# SMTP_PASSWORD=your-app-password</code></pre>
+            </div>
+          </div>
+
+          <!-- PANE 5 -->
+          <div id="pane-step-5" class="stepper-pane" role="tabpanel" hidden>
+            <h3 class="pane-title">5. Execute Comprehensive Regression Tests</h3>
+            <p class="pane-desc">
+              Run the full 4-tier E2E test suite to verify data isolation, route calculations, anti-hallucination proposal boundaries, and MCP tool registrations.
+            </p>
+            <div class="code-terminal">
+              <div class="terminal-bar">
+                <span class="terminal-title">Test Runner Command</span>
+                <button class="btn-copy" data-target="code-step-5" aria-label="Copy Command">Copy</button>
+              </div>
+              <pre><code id="code-step-5">python tests/run_e2e_tests.py</code></pre>
+            </div>
+            <div class="diff-box pass-box">
+              <div class="diff-header">Expected Test Results</div>
+              <pre class="terminal-log"><code>======================================================================
+Tier 1: Feature Coverage (57 tests)       -> PASS (10.29s)
+Tier 2: Boundary &amp; Corner Cases (19 tests) -> PASS (1.63s)
+Tier 3: Pairwise Interactions (10 tests)  -> PASS (0.95s)
+Tier 4: Real-World Workloads (6 tests)    -> PASS (1.22s)
+----------------------------------------------------------------------
+Ran 92 tests in 14.72s -- ALL TESTS PASSED (100% PASS RATE)</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SANDBOXES CONTAINER -->
+  <section id="sandboxes" class="section sandboxes-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Interactive Sandboxes</h2>
+        <p class="section-subtitle">
+          Test the core algorithms in your browser. All interactive tools execute client-side with zero external API calls or tracking.
+        </p>
+      </div>
+
+      <!-- SANDBOX TABS -->
+      <div class="sandbox-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="trap-tester" role="tab" aria-selected="true" aria-controls="trap-tester">
+          Screening Trap &amp; Code Word Tester
+        </button>
+        <button class="tab-btn" data-tab="mcp-simulator" role="tab" aria-selected="false" aria-controls="mcp-simulator">
+          MCP 8-Tool Interactive Simulator
+        </button>
+        <button class="tab-btn" data-tab="world-clock" role="tab" aria-selected="false" aria-controls="world-clock">
+          Global Hiring Windows &amp; World Clock
+        </button>
+      </div>
+
+      <!-- SANDBOX PANELS -->
+      <div class="sandbox-container">
+
+        <!-- SANDBOX A: SCREENING TRAP TESTER -->
+        <div id="trap-tester" class="sandbox-panel active" role="tabpanel">
+          <div class="sandbox-grid">
+            <!-- INPUT COLUMN -->
+            <div class="sandbox-input-col">
+              <div class="preset-row">
+                <span class="preset-label">Sample Job Descriptions:</span>
+                <div class="preset-buttons">
+                  <button type="button" class="btn-preset active" data-preset="blueberry">Code Word "Blueberry"</button>
+                  <button type="button" class="btn-preset" data-preset="operations">Operations Form (0 Connects)</button>
+                  <button type="button" class="btn-preset" data-preset="masked">Masked Email Safeguard</button>
+                  <button type="button" class="btn-preset" data-preset="custom">Clear / Custom</button>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="jd-input" class="field-label">Job Description Text</label>
+                <textarea id="jd-input" class="textarea-input" rows="12" placeholder="Paste a job description to audit screening traps and generate a grounded proposal..."></textarea>
+              </div>
+
+              <div class="action-row">
+                <button type="button" id="btn-analyze-jd" class="btn btn-primary">Audit Traps &amp; Generate Proposal</button>
+              </div>
+            </div>
+
+            <!-- RESULT COLUMN -->
+            <div class="sandbox-result-col">
+              <div class="result-header">
+                <h3 class="result-title">Real-Time Evaluation &amp; Audit Output</h3>
+              </div>
+
+              <div class="badge-row">
+                <div class="eval-badge">
+                  <span class="badge-title">Match Score</span>
+                  <span id="result-match-score" class="badge-val">94% — High Fit</span>
+                </div>
+                <div class="eval-badge">
+                  <span class="badge-title">Application Route</span>
+                  <span id="result-route" class="badge-val">Route A: Direct Email</span>
+                </div>
+                <div class="eval-badge">
+                  <span class="badge-title">Connects Spent</span>
+                  <span id="result-connects" class="badge-val">0 Points</span>
+                </div>
+              </div>
+
+              <div class="audit-details-card">
+                <div class="audit-row">
+                  <span class="audit-label">Detected Secret Code:</span>
+                  <span id="result-secret-code" class="audit-val code-highlight">BLUEBERRY</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Screening Action:</span>
+                  <span id="result-instructions" class="audit-val">Insert secret code into email subject and opening line.</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Target Recipient:</span>
+                  <span id="result-target" class="audit-val">careers@apexhorizonpartners.example.com</span>
+                </div>
+              </div>
+
+              <div class="proposal-preview-card">
+                <div class="preview-header">
+                  <span class="preview-title">Generated Grounded Proposal</span>
+                  <div class="proposal-controls">
+                    <span id="result-word-count" class="word-counter">184 words</span>
+                    <button type="button" id="trap-copy-proposal-btn" class="btn-copy">Copy Proposal</button>
+                  </div>
+                </div>
+                <div class="proposal-subject-box">
+                  <strong>Subject:</strong> <span id="result-proposal-subject">[BLUEBERRY] Application: Executive VA &amp; Systems Specialist — Alex Taylor</span>
+                </div>
+                <div id="result-proposal-body" class="proposal-body-box">Keyword / Screening Code: BLUEBERRY
+
+Hi Apex Horizon Team,
+
+I understand you need dependable, proactive executive support to keep calendars scheduled across timezones, inboxes answered promptly, and administrative priorities on track without hand-holding.
+
+Here is how my verified background directly supports your workflow:
+- Proactive Calendar &amp; Inbox Management: Experience coordinating executive calendars across US and global timezones, managing high-volume correspondence, and maintaining Inbox Zero.
+- High-Accuracy Data &amp; Systems: Advanced proficiency in Google Sheets, Notion, and Airtable, ensuring reliable data tracking, clear reporting, and structured SOP documentation.
+- Rapid Communication &amp; Low Friction: Experienced managing client inquiries, meeting agendas, and team deliverables with zero need for hand-holding.
+
+Workstation &amp; Availability: Equipped with high-speed fiber internet (300 Mbps) plus mobile backup, a dedicated workstation with UPS battery backup, and immediate availability aligned with your core business hours.
+
+I would welcome the opportunity for a brief 10-minute discovery chat or to complete a short trial task to demonstrate my reliability firsthand.
+
+Best regards,
+Alex Taylor
+Remote, Worldwide
+Portfolio: https://portfolio.example.com
+Resume: https://docs.google.com/document/d/your-resume-link/pub</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SANDBOX B: MCP 8-TOOL SIMULATOR -->
+        <div id="mcp-simulator" class="sandbox-panel" role="tabpanel" hidden>
+          <div class="mcp-simulator-layout">
+            <div class="mcp-sidebar">
+              <label for="mcp-tool-select" class="field-label">Select Model Context Protocol Tool</label>
+              <select id="mcp-tool-select" class="select-input">
+                <option value="search_jobs">1. search_jobs</option>
+                <option value="get_job_details">2. get_job_details</option>
+                <option value="generate_job_proposal">3. generate_job_proposal</option>
+                <option value="apply_job">4. apply_job</option>
+                <option value="update_job_status">5. update_job_status</option>
+                <option value="trigger_scrape">6. trigger_scrape</option>
+                <option value="get_pipeline_stats">7. get_pipeline_stats</option>
+                <option value="get_candidate_profile">8. get_candidate_profile</option>
+              </select>
+
+              <form id="mcp-params-form" class="mcp-params-form">
+                <div id="mcp-param-fields"></div>
+                <button type="button" id="btn-exec-mcp" class="btn btn-primary btn-block">Simulate MCP Call</button>
+              </form>
+            </div>
+
+            <div class="mcp-console-area">
+              <div class="console-topbar">
+                <span class="console-label">MCP Tool Protocol Signature</span>
+                <span id="mcp-latency" class="console-latency">Latency: ~12ms</span>
+              </div>
+              <div class="signature-box">
+                <code id="mcp-call-sig">call_tool("onlinejobs-portal", "search_jobs", {"min_score": 75, "limit": 3})</code>
+              </div>
+              <div class="console-topbar">
+                <span class="console-label">Structured JSON Response</span>
+                <button type="button" class="btn-copy" data-target="mcp-console-output">Copy JSON</button>
+              </div>
+              <pre class="mcp-output-box"><code id="mcp-console-output"></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- SANDBOX C: GLOBAL HIRING WINDOWS WORLD CLOCK -->
+        <div id="world-clock" class="sandbox-panel" role="tabpanel" hidden>
+          <div class="clock-intro-bar">
+            <div>
+              <h3 class="clock-heading">Global Employer Peak Hiring Windows</h3>
+              <p class="clock-sub">Live synchronized tracking across key employer markets. Apply during peak active hours for higher recruiter open rates.</p>
+            </div>
+            <div class="next-scrape-card">
+              <span class="scrape-label">Next Scheduled Cloud Scrape:</span>
+              <span id="next-scrape-timer" class="scrape-countdown">Calculating...</span>
+            </div>
+          </div>
+
+          <div class="clocks-grid">
+            <!-- PHT -->
+            <div class="clock-card" data-tz="Asia/Manila">
+              <div class="clock-header">
+                <span class="clock-city">Philippines</span>
+                <span class="clock-code">PHT (UTC+8)</span>
+              </div>
+              <div id="clock-pht" class="clock-time">--:--:--</div>
+              <div class="clock-status-row">
+                <span class="status-dot active"></span>
+                <span class="status-text">Automation Base</span>
+              </div>
+              <div class="clock-meta">Scrape Runs: 01:00, 07:00, 17:00, 21:00</div>
+            </div>
+
+            <!-- US WEST -->
+            <div class="clock-card" data-tz="America/Los_Angeles">
+              <div class="clock-header">
+                <span class="clock-city">US West Coast</span>
+                <span class="clock-code">PST (UTC-8)</span>
+              </div>
+              <div id="clock-pst" class="clock-time">--:--:--</div>
+              <div class="clock-status-row">
+                <span id="status-pst-dot" class="status-dot"></span>
+                <span id="status-pst" class="status-text">Checking window...</span>
+              </div>
+              <div class="clock-meta">Hiring Peak: 09:00 AM – 11:30 AM PST</div>
+            </div>
+
+            <!-- US EAST -->
+            <div class="clock-card" data-tz="America/New_York">
+              <div class="clock-header">
+                <span class="clock-city">US East Coast</span>
+                <span class="clock-code">EST (UTC-5)</span>
+              </div>
+              <div id="clock-est" class="clock-time">--:--:--</div>
+              <div class="clock-status-row">
+                <span id="status-est-dot" class="status-dot"></span>
+                <span id="status-est" class="status-text">Checking window...</span>
+              </div>
+              <div class="clock-meta">Hiring Peak: 08:00 AM – 11:30 AM EST</div>
+            </div>
+
+            <!-- UK -->
+            <div class="clock-card" data-tz="Europe/London">
+              <div class="clock-header">
+                <span class="clock-city">United Kingdom</span>
+                <span class="clock-code">GMT (UTC+0)</span>
+              </div>
+              <div id="clock-gmt" class="clock-time">--:--:--</div>
+              <div class="clock-status-row">
+                <span id="status-gmt-dot" class="status-dot"></span>
+                <span id="status-gmt" class="status-text">Checking window...</span>
+              </div>
+              <div class="clock-meta">Hiring Peak: 09:00 AM – 11:30 AM GMT</div>
+            </div>
+
+            <!-- AU -->
+            <div class="clock-card" data-tz="Australia/Sydney">
+              <div class="clock-header">
+                <span class="clock-city">Australia</span>
+                <span class="clock-code">AEST (UTC+10)</span>
+              </div>
+              <div id="clock-aest" class="clock-time">--:--:--</div>
+              <div class="clock-status-row">
+                <span id="status-aest-dot" class="status-dot"></span>
+                <span id="status-aest" class="status-text">Checking window...</span>
+              </div>
+              <div class="clock-meta">Hiring Peak: 09:00 AM – 11:30 AM AEST</div>
+            </div>
+          </div>
+
+          <div class="window-advice-box">
+            <strong>Recruiter Visibility Tip:</strong> Submitting proposals within the first 60 minutes of a job post in the employer's local morning window places your application in the top 10 inbox positions before applicant floods begin.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ZERO-COST DEPLOYMENT MATRIX -->
+  <section id="zero-cost" class="section matrix-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Zero-Cost Deployment Options</h2>
+        <p class="section-subtitle">
+          Compare all supported deployment strategies. Every single option operates at strictly $0.00/month with zero ongoing expenses.
+        </p>
+      </div>
+
+      <div class="table-container">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th scope="col">Deployment Mode</th>
+              <th scope="col">Monthly Cost</th>
+              <th scope="col">Setup Time</th>
+              <th scope="col">Background Scheduling</th>
+              <th scope="col">MCP Agent Interop</th>
+              <th scope="col">Primary Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>GitHub Actions Free Cron</strong>
+                <div class="table-sub">.github/workflows/scheduled_scrape.yml</div>
+              </td>
+              <td><span class="tag-free">$0.00</span></td>
+              <td>2 minutes</td>
+              <td>Automatic (Runs 3x/day across AU, UK, US windows)</td>
+              <td>Artifact download (jobs.db synced locally)</td>
+              <td>Hands-off cloud scraping without keeping a local computer turned on.</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Local Workstation &amp; Dashboard</strong>
+                <div class="table-sub">scripts/start_all.sh or .bat</div>
+              </td>
+              <td><span class="tag-free">$0.00</span></td>
+              <td>3 minutes</td>
+              <td>Background Python daemon thread</td>
+              <td>Native SSE (http://localhost:5055/sse)</td>
+              <td>Active daily job hunting with a local visual UI on port 5050.</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Task Scheduler / Crontab</strong>
+                <div class="table-sub">register_task_scheduler.ps1 or setup_cron.sh</div>
+              </td>
+              <td><span class="tag-free">$0.00</span></td>
+              <td>1 command</td>
+              <td>Native OS cron or Windows Task Scheduler</td>
+              <td>Shared local SQLite database access</td>
+              <td>Always-on laptops, home desktops, or mini PCs running locally.</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Docker Compose</strong>
+                <div class="table-sub">docker-compose.yml</div>
+              </td>
+              <td><span class="tag-free">$0.00</span></td>
+              <td>1 command</td>
+              <td>Containerized background scheduler</td>
+              <td>Port-forwarded SSE on port 5055</td>
+              <td>Self-hosted home labs, NAS units, and local microservers.</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Direct AI Coding Agent</strong>
+                <div class="table-sub">scripts/run_mcp_stdio.sh or .bat</div>
+              </td>
+              <td><span class="tag-free">$0.00</span></td>
+              <td>1 minute</td>
+              <td>Agent-triggered on demand</td>
+              <td>Zero-latency stdio transport</td>
+              <td>Claude Desktop, Cursor, Antigravity, and Cline querying jobs via tools.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILL ECOSYSTEM & STANDALONE TOOLS -->
+  <section id="skill-ecosystem" class="section skill-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Skill Ecosystem &amp; Standalone CLI Tools</h2>
+        <p class="section-subtitle">
+          Export the core proposal engine into any agent workflow as a portable, standardized skill package.
+        </p>
+      </div>
+
+      <div class="skill-grid">
+        <!-- SKILL SPECIFICATION CARD -->
+        <div class="skill-card">
+          <div class="skill-card-top">
+            <span class="skill-name">/onlinejobs-proposal-generator</span>
+            <span class="skill-badge">Standard SKILL.md</span>
+          </div>
+          <p class="skill-desc">
+            A self-contained agent skill with standard YAML frontmatter. Audits job descriptions, surfaces screening traps, enforces candidate ground truth, and writes 150-250 word proposals.
+          </p>
+          <div class="skill-specs">
+            <div class="spec-row">
+              <span class="spec-key">Frontmatter Format:</span>
+              <span class="spec-val">Agents Standard (name, description, version)</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Supported Environments:</span>
+              <span class="spec-val">.agents/skills, .cursor/skills, .claude/skills</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Ground Truth Anchor:</span>
+              <span class="spec-val">Decoupled config/profile.yaml facts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1-COMMAND INSTALLER CARD -->
+        <div class="cli-card">
+          <div class="cli-header">
+            <span class="cli-title">1-Command Universal Installation (skills.sh)</span>
+          </div>
+          <p class="cli-desc">
+            Use the included POSIX or PowerShell script to install, test, and run the skill in any project workspace:
+          </p>
+          <div class="code-terminal">
+            <div class="terminal-bar">
+              <span class="terminal-title">Bash / macOS / Linux</span>
+              <button class="btn-copy" data-target="code-skills-sh">Copy</button>
+            </div>
+            <pre><code id="code-skills-sh"># 1. Install skill into your current workspace agent folder
+./skills.sh install
+
+# 2. Run automated validation check
+./skills.sh test
+
+# 3. Generate a tailored proposal from the command line
+./skills.sh run onlinejobs-proposal-generator --jd "Virtual Assistant needed. Put Blueberry in subject..."</code></pre>
+          </div>
+
+          <div class="code-terminal">
+            <div class="terminal-bar">
+              <span class="terminal-title">Windows PowerShell</span>
+              <button class="btn-copy" data-target="code-skills-ps1">Copy</button>
+            </div>
+            <pre><code id="code-skills-ps1"># Install and run on Windows PowerShell
+.\skills.ps1 install
+.\skills.ps1 test
+.\skills.ps1 run onlinejobs-proposal-generator --jd "Virtual Assistant needed. Put Blueberry in subject..."</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE FOOTER & DOCUMENTATION LINKS -->
+  <footer id="docs" class="page-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-brand">jobhunt_opensource</div>
+          <p class="footer-about">
+            A production-ready, zero-cost remote job hunt and proposal generation ecosystem. Built for human jobseekers and AI coding agents.
+          </p>
+          <div class="footer-license">
+            Licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>. Free for personal and commercial usage.
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Architecture &amp; Design</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/ARCHITECTURE.md">System Architecture (ARCHITECTURE.md)</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/docs/ZERO_COST_DEPLOYMENT.md">Zero-Cost Deployment Guide</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/TEST_INFRA.md">Testing Infrastructure &amp; Tiers</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/TEST_READY.md">E2E Verification Report</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Setup &amp; AI Integration</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/SETUP.md">Local &amp; MCP Setup Guide (SETUP.md)</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/AGENT_SETUP_PROMPT.md">Coding Agent Setup Prompt</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/CONTRIBUTING.md">Contribution Guidelines</a></li>
+            <li><a href="https://github.com/your-username/jobhunt_opensource/blob/main/LICENSE">MIT License Notice</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="copyright-notice">
+          &copy; 2026 jobhunt_opensource contributors. 100% self-hosted, offline-capable, and privacy-respecting.
+        </div>
+        <div class="footer-tags">
+          <span class="status-pill">Zero Tracking</span>
+          <span class="status-pill">Zero Telemetry</span>
+          <span class="status-pill">Zero Paid API Keys Required</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT INCLUSION -->
+  <script src="app.js"></script>
+</body>
+</html>

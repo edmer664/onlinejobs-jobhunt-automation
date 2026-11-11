@@ -1,0 +1,1586 @@
+/* ==========================================================================
+   jobhunt_opensource — Minimalist Monochrome Design System
+   Architecture: High-density data-focused UI with crisp flat borders.
+   Design Tokens:
+     - Foundation: Background #F5F5F5, Surface #FFFFFF & #FAFAFA, Text #0D0D0D
+     - Primary Action: #0047DF (Hover: #0037B3, Active: #002B8C)
+     - Accent: #FFB000 (Strictly reserved for active states, live indicators, callouts)
+     - Flat Borders: 1px solid #E5E5E5 (or #0D0D0D for active/contrast elements)
+   Strict Prohibitions:
+     - ZERO linear, radial, or conic gradients
+     - ZERO ambient glows or drop shadows (box-shadow: none !important)
+     - ZERO glassmorphism (backdrop-filter: none !important)
+     - ZERO purple, indigo, or violet accents
+     - ZERO generic 3-card feature grids
+     - ZERO // delimiters in headers, category slugs, or taglines
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens (CSS Variables)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Monochrome Foundation */
+  --bg: #F5F5F5;
+  --surface: #FFFFFF;
+  --surface-alt: #FAFAFA;
+  --surface-hover: #F0F0F0;
+  --surface-active: #EAEAEA;
+  --surface-dark: #0D0D0D;
+
+  /* Typography */
+  --text-primary: #0D0D0D;
+  --text-secondary: #555555;
+  --text-muted: #777777;
+  --text-inverse: #FFFFFF;
+
+  /* Crisp Flat Borders (0 Box Shadows) */
+  --border: #E5E5E5;
+  --border-strong: #0D0D0D;
+  --border-subtle: #EEEEEE;
+
+  /* Primary Action Palette */
+  --primary: #0047DF;
+  --primary-hover: #0037B3;
+  --primary-active: #002B8C;
+  --primary-subtle: #EBF0FF;
+
+  /* Functional Accent (Active Indicators, Live Markers, Callouts Only) */
+  --accent: #FFB000;
+  --accent-hover: #E59E00;
+  --accent-subtle: #FFF8E6;
+  --accent-text: #8A5308;
+
+  /* Flat Status Tints */
+  --status-success-bg: #EDF6F0;
+  --status-success-text: #0F6338;
+  --status-success-border: #0F6338;
+
+  --status-danger-bg: #FBEEEE;
+  --status-danger-text: #9E2828;
+  --status-danger-border: #9E2828;
+
+  /* Typography Stacks */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Layout Rhythm */
+  --max-width: 1200px;
+  --nav-height: 56px;
+  --radius-none: 0px;
+  --radius-sm: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Hard Rule Enforcement
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg {
+  display: block;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+  border-color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography & Hierarchy Over Decoration
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout Framework
+   -------------------------------------------------------------------------- */
+.container {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-header {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   5. Top Navigation Bar (Flat 1px Border Bottom)
+   -------------------------------------------------------------------------- */
+.navbar, .site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: var(--nav-height);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.brand-link, .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.brand-link:hover, .nav-brand:hover {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.brand-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background-color: var(--surface-alt);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.nav-menu, .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: all 0.12s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-alt);
+  border-color: var(--border);
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: var(--primary);
+  background-color: var(--primary-subtle);
+  border-color: var(--primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Buttons & Interactive Controls
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border: 1px solid var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #FFFFFF;
+}
+
+.btn-primary:active {
+  background-color: var(--primary-active);
+  border-color: var(--primary-active);
+}
+
+.btn-outline {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  background-color: var(--surface-alt);
+  border-color: var(--text-primary);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.btn-copy:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-copy.copied {
+  background-color: var(--status-success-bg);
+  border-color: var(--status-success-border);
+  color: var(--status-success-text);
+}
+
+/* --------------------------------------------------------------------------
+   7. Hero Section & Metrics Strip (Dense 5-Cell Strip)
+   -------------------------------------------------------------------------- */
+.hero-section {
+  padding: 72px 0 56px 0;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  max-width: 860px;
+}
+
+.hero-title {
+  margin-bottom: 18px;
+}
+
+.hero-lead {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  max-width: 760px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border: 1px solid var(--border);
+  background-color: var(--surface-alt);
+}
+
+.metric-card {
+  padding: 18px 20px;
+  border-right: 1px solid var(--border);
+}
+
+.metric-card:last-child {
+  border-right: none;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.metric-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. Pipeline Section (Flow Diagram & Asymmetric Reference Panel)
+   -------------------------------------------------------------------------- */
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: 1.45fr 0.95fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.pipeline-diagram-card, .pipeline-rules-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.diagram-step {
+  display: flex;
+  gap: 16px;
+  position: relative;
+}
+
+.step-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary);
+  background-color: var(--primary-subtle);
+  border: 1px solid var(--primary);
+  padding: 4px 8px;
+  height: fit-content;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+}
+
+.step-info {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.connector-line {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border);
+  margin: 6px 0 6px 28px;
+}
+
+.branch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.branch-card {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 12px;
+}
+
+.branch-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.branch-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--status-success-text);
+  background-color: var(--status-success-bg);
+  border: 1px solid var(--status-success-border);
+  padding: 2px 6px;
+  display: inline-block;
+  margin-bottom: 6px;
+  border-radius: var(--radius-sm);
+}
+
+.branch-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Reference Panel Rules */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.rule-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.rule-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.rule-num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  padding-top: 2px;
+}
+
+.rule-body strong {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.rule-body p {
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   9. Build Process & Profile Customization Stepper
+   -------------------------------------------------------------------------- */
+.stepper-layout {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.stepper-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface-alt);
+  overflow-x: auto;
+}
+
+.stepper-btn {
+  flex: 1;
+  padding: 14px 18px;
+  text-align: left;
+  border-right: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.stepper-btn:last-child {
+  border-right: none;
+}
+
+.stepper-btn:hover {
+  background-color: var(--surface-hover);
+}
+
+.stepper-btn.active {
+  background-color: var(--surface);
+  border-bottom: 3px solid var(--primary);
+}
+
+.step-index {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+.stepper-btn.active .step-index {
+  color: var(--primary);
+}
+
+.step-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.stepper-content {
+  padding: 28px;
+}
+
+.stepper-pane {
+  display: none;
+}
+
+.stepper-pane.active {
+  display: block;
+}
+
+.pane-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pane-desc {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  max-width: 800px;
+}
+
+.code-terminal {
+  border: 1px solid var(--border-strong);
+  background-color: #0D0D0D;
+  margin: 14px 0;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background-color: #1A1A1A;
+  border-bottom: 1px solid #2B2B2B;
+}
+
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #CCCCCC;
+}
+
+.code-terminal pre {
+  padding: 14px 16px;
+  color: #F5F5F5;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.callout-box {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 14px;
+}
+
+.terminal-diff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.diff-box {
+  border: 1px solid var(--border);
+  background-color: var(--surface-alt);
+}
+
+.diff-header {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pass-box {
+  border-color: var(--status-success-border);
+}
+
+.pass-box .diff-header {
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+  border-bottom-color: var(--status-success-border);
+}
+
+.fail-box {
+  border-color: var(--status-danger-border);
+}
+
+.fail-box .diff-header {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+  border-bottom-color: var(--status-danger-border);
+}
+
+.terminal-log {
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* --------------------------------------------------------------------------
+   10. Interactive Sandboxes Container & Tabs
+   -------------------------------------------------------------------------- */
+.sandbox-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-bottom: none;
+  background-color: var(--surface-alt);
+  cursor: pointer;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: all 0.12s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background-color: var(--surface-hover);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  background-color: var(--surface);
+  border-color: var(--border);
+  border-top: 2px solid var(--primary);
+  margin-bottom: -1px;
+}
+
+.sandbox-container {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.sandbox-panel {
+  display: none;
+  padding: 24px;
+}
+
+.sandbox-panel.active {
+  display: block;
+}
+
+/* Sandbox A: Screening Trap Tester */
+.sandbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.sandbox-input-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.preset-row {
+  margin-bottom: 14px;
+}
+
+.preset-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn-preset {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.btn-preset:hover {
+  background-color: var(--surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.btn-preset.active {
+  background-color: var(--primary-subtle);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.textarea-input {
+  width: 100%;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.sandbox-result-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.result-title {
+  font-size: 1rem;
+  font-weight: 700;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.badge-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.eval-badge {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 10px;
+}
+
+.badge-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.badge-val {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.audit-details-card {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 14px;
+}
+
+.audit-row {
+  display: flex;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  gap: 8px;
+}
+
+.audit-row:last-child {
+  margin-bottom: 0;
+}
+
+.audit-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 150px;
+}
+
+.audit-val {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.code-highlight {
+  background-color: var(--accent-subtle);
+  border: 1px solid var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.proposal-preview-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.preview-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.proposal-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.word-counter {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  background-color: var(--primary-subtle);
+  border: 1px solid var(--primary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.proposal-subject-box {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 8px 10px;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.proposal-body-box {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border-subtle);
+  padding: 10px;
+  background-color: var(--surface);
+}
+
+/* --------------------------------------------------------------------------
+   11. Sandbox B: MCP 8-Tool Interactive Simulator
+   -------------------------------------------------------------------------- */
+.mcp-simulator-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 24px;
+}
+
+.mcp-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-input {
+  width: 100%;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  margin-bottom: 16px;
+}
+
+.mcp-params-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.param-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.param-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.param-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.param-input {
+  width: 100%;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.mcp-console-area {
+  display: flex;
+  flex-direction: column;
+  background-color: #0D0D0D;
+  border: 1px solid var(--border-strong);
+}
+
+.console-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background-color: #1A1A1A;
+  border-bottom: 1px solid #2B2B2B;
+}
+
+.console-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #CCCCCC;
+}
+
+.console-latency {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.signature-box {
+  padding: 10px 14px;
+  background-color: #141414;
+  border-bottom: 1px solid #2B2B2B;
+  color: #9CDCFE;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  overflow-x: auto;
+}
+
+.mcp-output-box {
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #F5F5F5;
+  overflow: auto;
+  min-height: 280px;
+  max-height: 400px;
+  white-space: pre-wrap;
+}
+
+/* --------------------------------------------------------------------------
+   12. Sandbox C: Global Hiring Windows World Clock
+   -------------------------------------------------------------------------- */
+.clock-intro-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.clock-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.clock-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.next-scrape-card {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-strong);
+  padding: 8px 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.scrape-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.scrape-countdown {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.clocks-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.clock-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.12s ease;
+}
+
+.clock-card.active-market {
+  border-color: var(--accent);
+  border-top: 3px solid var(--accent);
+}
+
+.clock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.clock-city {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.clock-code {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.clock-time {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 6px 0 10px 0;
+  letter-spacing: -0.03em;
+}
+
+.clock-status-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 6px;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+/* Strictly reserve #FFB000 for active state */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #B0B0B0;
+  display: inline-block;
+}
+
+.status-dot.active {
+  background-color: var(--accent);
+}
+
+.status-text {
+  color: var(--text-secondary);
+  font-size: 0.7rem;
+}
+
+.status-text.active {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.clock-meta {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.window-advice-box {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  margin-top: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   13. Zero-Cost Deployment Comparison Table (Dense 1px Borders)
+   -------------------------------------------------------------------------- */
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.86rem;
+}
+
+.matrix-table th, .matrix-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.matrix-table th:last-child, .matrix-table td:last-child {
+  border-right: none;
+}
+
+.matrix-table th {
+  background-color: var(--surface-alt);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.matrix-table tr:last-child td {
+  border-bottom: none;
+}
+
+.matrix-table tr:hover td {
+  background-color: var(--surface-hover);
+}
+
+.table-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.tag-free {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--status-success-text);
+  background-color: var(--status-success-bg);
+  border: 1px solid var(--status-success-border);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   14. Skill Ecosystem & Universal skills.sh Showcase
+   -------------------------------------------------------------------------- */
+.skill-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.skill-card, .cli-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+
+.skill-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.skill-name {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.skill-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.skill-desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.skill-specs {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.spec-row {
+  display: flex;
+  font-size: 0.8rem;
+  gap: 10px;
+}
+
+.spec-key {
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 140px;
+}
+
+.spec-val {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.cli-header {
+  margin-bottom: 8px;
+}
+
+.cli-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cli-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   15. Footer (Minimalist & Plain Language)
+   -------------------------------------------------------------------------- */
+.page-footer {
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 48px 0 32px 0;
+  margin-top: 64px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.footer-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.footer-about {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  max-width: 360px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.footer-license {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-links a {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.status-pill {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   16. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .clocks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .metrics-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .sandbox-grid, .mcp-simulator-layout, .skill-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .terminal-diff-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .metrics-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .clocks-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .branch-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stepper-nav {
+    flex-direction: column;
+  }
+
+  .stepper-btn {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .clocks-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
