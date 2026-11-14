@@ -319,6 +319,69 @@ class TestSkillsPackagingAndRunners(unittest.TestCase):
         self.assertEqual(res_run.returncode, 0, f"skills.sh run failed: {res_run.stderr}")
         self.assertIn("# OnlineJobs.ph Job Evaluation & High-Conversion Proposal", res_run.stdout)
 
+    def test_12_unicode_typographical_quotes_secret_codes(self):
+        """Verify paired typographical/unicode quote matching for secret codes (Defect 1)."""
+        from src.proposal_engine import audit_screening_traps
+
+        # Test double curved quotes (\u201c ... \u201d)
+        res_curved_double = audit_screening_traps("Please include the code word \u201cBLUEBERRY\u201d in your subject line.")
+        self.assertIn("BLUEBERRY", res_curved_double.get("secret_codes", []), "Failed to extract curved double quoted code")
+
+        # Test single curved quotes (\u2018 ... \u2019)
+        res_curved_single = audit_screening_traps("Start your application with magic phrase \u2018READY-NOW\u2019.")
+        self.assertIn("READY-NOW", res_curved_single.get("secret_codes", []), "Failed to extract curved single quoted code")
+
+        # Test guillemets (« ... »)
+        res_guillemets = audit_screening_traps("Put «PHOENIX» in the subject line.")
+        self.assertIn("PHOENIX", res_guillemets.get("secret_codes", []), "Failed to extract guillemet quoted code")
+
+    def test_13_negative_disclaimer_trap_rejection(self):
+        """Verify negative phrasing/disclaimer traps are rejected and not inserted into subject (Defect 2)."""
+        jd_negative_trap = (
+            "Virtual Assistant Wanted\n"
+            "Do NOT put the word 'BLUEBERRY' in your subject line. Candidates who include blueberry will be rejected immediately.\n"
+            "Send your CV to jobs@agency.org."
+        )
+        eval_res, prop_res, md = evaluate_and_generate(jd_text=jd_negative_trap)
+        codes = prop_res.get("screening_audit", {}).get("secret_codes", [])
+        self.assertNotIn("BLUEBERRY", codes, f"Negative trap code incorrectly extracted: {codes}")
+        self.assertNotIn("[BLUEBERRY]", prop_res.get("subject_line", ""), "Prohibited code placed in subject line")
+
+        # Also test 'Never include' variant
+        jd_never = "Never include 'BLUEBERRY' in your subject line. Apply directly."
+        eval_res2, prop_res2, _ = evaluate_and_generate(jd_text=jd_never)
+        codes2 = prop_res2.get("screening_audit", {}).get("secret_codes", [])
+        self.assertNotIn("BLUEBERRY", codes2, f"'Never include' trap incorrectly extracted: {codes2}")
+
+    def test_14_channel_priority_route_c_over_route_a(self):
+        """Verify Route C (External Form) takes precedence over Route A (Direct Email) in proposal markdown (Defect 3)."""
+        jd_dual_channel = (
+            "Operations Coordinator\n"
+            "Please do NOT send emails or resumes to info@agency.org (that inbox is not checked and emails will be discarded).\n"
+            "All applicants must fill out the form at https://forms.gle/officialform123.\n"
+        )
+        eval_res, prop_res, md = evaluate_and_generate(jd_text=jd_dual_channel)
+        self.assertIn("Route C: External Form (https://forms.gle/officialform123)", md)
+        self.assertNotIn("Route A: Direct Email", md)
+
+    def test_15_powershell_runner_empty_jd_argument(self):
+        """Verify PowerShell runner handles empty string argument --jd '' cleanly without crashing (Defect 4)."""
+        for script in [self.ps1_script, self.scripts_ps1]:
+            cmd = [
+                "powershell",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                script,
+                "run",
+                "onlinejobs-proposal-generator",
+                "--jd",
+                '""',
+            ]
+            res = subprocess.run(cmd, cwd=PROJECT_ROOT, capture_output=True, text=True, timeout=15)
+            self.assertEqual(res.returncode, 0, f"Runner failed on empty --jd argument with {script}: {res.stderr}\n{res.stdout}")
+            self.assertIn("# OnlineJobs.ph Job Evaluation & High-Conversion Proposal", res.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

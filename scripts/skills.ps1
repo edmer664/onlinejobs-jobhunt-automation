@@ -89,7 +89,13 @@ switch ($Command) {
             $runArgs += $TargetOrSkill
         }
         if ($RemainingArgs) {
-            $runArgs += $RemainingArgs
+            foreach ($arg in $RemainingArgs) {
+                if ($arg -eq "") {
+                    $runArgs += '""'
+                } else {
+                    $runArgs += $arg
+                }
+            }
         }
         & $pythonBin $enginePath @runArgs
         exit $LASTEXITCODE

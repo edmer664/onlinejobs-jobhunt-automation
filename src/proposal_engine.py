@@ -74,23 +74,52 @@ def audit_screening_traps(text: str) -> Dict[str, Any]:
         traps["form_submission"] = form_match.group(1).rstrip(".,;:")
         traps["submission_channel"] = f"External Application Form ({traps['form_submission']})"
 
-    # Secret code words or phrases with strict intent patterns
-    QUOTES = "\"'\u201c\u201d\u2018\u2019"
+    # Secret code words or phrases with strict intent patterns and paired quotes
+    ALL_QUOTES = "\"'\u201c\u201d\u2018\u2019«»"
+    PAIRED_QUOTE = (
+        r'(?:'
+        r'(?:(["\'])([^"\'\n\r]{1,35})\1)|'
+        r'(?:\u201c([^\u201c\u201d\n\r]{1,35})\u201d)|'
+        r'(?:\u2018([^\u2018\u2019\n\r]{1,35})\u2019)|'
+        r'(?:«([^«»\n\r]{1,35})»)'
+        r')'
+    )
     code_patterns = [
         # e.g., start your application with the word "BOOKED" or magic phrase 'READY-NOW'
-        rf"start\s+your\s+(?:subject|message|proposal|application)\s+with\s+(?:(?:the\s+)?(?:secret|magic)?\s*(?:code\s+word|code|phrase|word)?\s+)?([{QUOTES}])([^{QUOTES}\n\r]{{1,35}})\1",
+        rf"start\s+your\s+(?:subject|message|proposal|application)\s+with\s+(?:(?:the\s+)?(?:secret|magic)?\s*(?:code\s+word|code|phrase|word)?\s+)?{PAIRED_QUOTE}",
         # e.g., put "Blueberry" in the subject or include the code word 'BLUEBERRY' in your subject
-        rf"(?:put|include|write|use)\s+(?:(?:the\s+)?(?:secret|magic)?\s*(?:code\s+word|code|phrase|word)?\s+)?([{QUOTES}])([^{QUOTES}\n\r]{{1,35}})\1\s+(?:in|as|on)\s+(?:the|your)?\s*subject",
+        rf"(?:put|include|write|use)\s+(?:(?:the\s+)?(?:secret|magic)?\s*(?:code\s+word|code|phrase|word)?\s+)?{PAIRED_QUOTE}\s+(?:in|as|on)\s+(?:the|your)?\s*(?:application\s+)?subject(?:\s+line)?",
         # e.g., subject line must contain "Banana"
-        rf"subject\s+line\s+must\s+(?:contain|include|start with)\s+[{QUOTES}]?([^{QUOTES}\n\r.,;]{{2,35}})[{QUOTES}]?",
+        rf"subject\s+line\s+must\s+(?:contain|include|start with)\s+[{ALL_QUOTES}]?([^{ALL_QUOTES}\n\r.,;]{{2,35}})[{ALL_QUOTES}]?",
         # e.g., secret word is "Coffee"
-        rf"(?:secret|magic|code)\s*(?:word|phrase)?\s*(?:is|:)\s*[{QUOTES}]?([^{QUOTES}\n\r.,;]{{2,30}})[{QUOTES}]?",
+        rf"(?:secret|magic|code)\s*(?:word|phrase)?\s*(?:is|:)\s*[{ALL_QUOTES}]?([^{ALL_QUOTES}\n\r.,;]{{2,30}})[{ALL_QUOTES}]?",
         # e.g., code word 'BLUEBERRY' or secret phrase 'READY-NOW'
-        rf"(?:secret|magic|code)\s*(?:word|phrase)\s*[:\s]\s*([{QUOTES}])([^{QUOTES}\n\r]{{1,35}})\1",
+        rf"(?:secret|magic|code)\s*(?:word|phrase)\s*[:\s]\s*{PAIRED_QUOTE}",
     ]
     for pattern in code_patterns:
         for match in re.finditer(pattern, text, re.IGNORECASE):
-            code = match.group(2 if len(match.groups()) >= 2 else 1).strip().strip(QUOTES).strip()
+            pre_text = text[max(0, match.start() - 80):match.start()]
+            clause_parts = re.split(r"[\n.!?;\r]", pre_text)
+            clause_pre = clause_parts[-1].strip().lower()
+
+            # Reject negative instructions / disclaimer traps (e.g., "Do NOT put 'BLUEBERRY'", "Never include 'BLUEBERRY'")
+            has_negative = bool(
+                re.search(
+                    r"\b(?:do\s+not|don'?t|never|avoid|should\s+not|shouldn'?t|must\s+not|mustn'?t|cannot|can'?t|refrain\s+from|prohibited)\b",
+                    clause_pre,
+                )
+            )
+            is_conditional = bool(re.search(r"\b(?:if|that|who|which)\b", clause_pre))
+            if has_negative and not is_conditional:
+                continue
+
+            code = None
+            for g in reversed(match.groups()):
+                if g:
+                    candidate = g.strip(ALL_QUOTES).strip()
+                    if len(candidate) > 1:
+                        code = candidate
+                        break
             if code and len(code) > 1 and code.lower() not in ("the", "this", "a", "an", "your", "none", "word", "code"):
                 if code not in traps["secret_codes"]:
                     traps["secret_codes"].append(code)
@@ -294,11 +323,11 @@ def format_evaluation_and_proposal_markdown(
     questions_str = f"{len(questions)} screening question(s)" if questions else "0 screening questions"
     traps_summary = f"{codes_str} | {questions_str}"
 
-    # Application channel & cost guardrail
-    if traps.get("email_submission"):
-        channel_info = f"Route A: Direct Email ({traps['email_submission']}) | 0 Connect Points Spent"
-    elif traps.get("form_submission"):
+    # Application channel & cost guardrail (Route C external form takes precedence over Route A direct email)
+    if traps.get("form_submission"):
         channel_info = f"Route C: External Form ({traps['form_submission']}) | 0 Connect Points Spent"
+    elif traps.get("email_submission"):
+        channel_info = f"Route A: Direct Email ({traps['email_submission']}) | 0 Connect Points Spent"
     else:
         channel_info = "Route B: On-Platform Fallback (Zero-Connect Cost Guardrail Enforced)"
 
@@ -509,6 +538,8 @@ def main():
     parser.add_argument(
         "--jd",
         type=str,
+        nargs="?",
+        const="",
         default=None,
         help="Job description text (or pass via stdin)",
     )
