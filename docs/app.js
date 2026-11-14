@@ -244,7 +244,7 @@ Email: ----------
     }
 
     // 2. External Application Form Detection
-    const formRegex = /https?:\/\/(?:forms\.gle|docs\.google\.com\/forms|airtable\.com|forms\.clickup\.com|(?:[a-zA-Z0-9_-]+\.)?clickup\.com\/f|recruitcrm\.io|apply\.workable\.com|tally\.so|jotform\.com|wkf\.ms)[^\s"\'<>]+/i;
+    const formRegex = /https?:\/\/(?:forms\.gle|docs\.google\.com\/forms|airtable\.com|forms\.clickup\.com|(?:[a-zA-Z0-9_-]+\.)?clickup\.com\/f|recruitcrm\.io|apply\.workable\.com|tally\.so|(?:[a-zA-Z0-9_-]+\.)?jotform\.com|wkf\.ms)[^\s"\'<>]+/i;
     const formMatch = text.match(formRegex);
     if (formMatch) {
       traps.formSubmission = formMatch[0].replace(/[.,;:)>\]]+$/, "");
@@ -252,20 +252,29 @@ Email: ----------
 
     // 3. Secret Code Words Detection
     const quoteChars = `"'\u201c\u201d\u2018\u2019`;
+    const quotedWord = `(?:(["'])([^${quoteChars}\\n\\r]{1,35})\\1|\\u201c([^${quoteChars}\\n\\r]{1,35})\\u201d|\\u2018([^${quoteChars}\\n\\r]{1,35})\\u2019)`;
     const codePatterns = [
-      new RegExp(`(?:put|include|write|use)\\s+([${quoteChars}])([^${quoteChars}\\n\\r]{1,35})\\1\\s+(?:in|as|on)\\s+(?:the|your)?\\s*subject`, 'i'),
-      new RegExp(`start\\s+your\\s+(?:subject|message|proposal|application)\\s+with\\s+(?:(?:the\\s+)?(?:word|phrase|code)\\s+)?([${quoteChars}])([^${quoteChars}\\n\\r]{1,35})\\1`, 'i'),
+      new RegExp(`(?:put|include|write|use)\\s+${quotedWord}\\s+(?:in|as|on)\\s+(?:the|your)?\\s*(?:email\\s*)?subject`, 'i'),
+      new RegExp(`start\\s+your\\s+(?:subject|message|proposal|application)\\s+with\\s+(?:(?:the\\s+)?(?:word|phrase|code)\\s+)?${quotedWord}`, 'i'),
       new RegExp(`subject\\s+line\\s+must\\s+(?:contain|include|start\\s+with)\\s+[${quoteChars}]?([^${quoteChars}\\n\\r.,;]{2,35})[${quoteChars}]?`, 'i'),
-      new RegExp(`(?:secret|magic|code|verification)\\s*(?:word|phrase|code)\\s*(?:is|:)?\\s*([${quoteChars}])?([^${quoteChars}\\n\\r.,;]{2,30})\\1?`, 'i'),
-      new RegExp(`(?:enter|type)\\s+([${quoteChars}])([^${quoteChars}\\n\\r]{2,35})\\1`, 'i')
+      new RegExp(`(?:secret|magic|code|verification)\\s*(?:word|phrase|code)\\s*(?:is\\s*:|is|:)\\s*[${quoteChars}]?([^${quoteChars}\\n\\r.,;]{2,30})[${quoteChars}]?`, 'i'),
+      new RegExp(`(?:enter|type)\\s+${quotedWord}`, 'i')
     ];
 
     const noiseWords = new Set(["the", "this", "a", "an", "your", "none", "word", "code", "proposal", "application", "carefully"]);
     for (const pat of codePatterns) {
       const match = text.match(pat);
       if (match) {
-        const candidate = (match[2] || match[1] || "").trim().replace(/^["'“”‘’]+|["'“”‘’]+$/g, "").trim();
-        if (candidate.length > 1 && !noiseWords.has(candidate.toLowerCase()) && !traps.secretCodes.includes(candidate)) {
+        let rawCandidate = "";
+        for (let i = 1; i < match.length; i++) {
+          if (match[i] && !['"', "'", '\u201c', '\u201d', '\u2018', '\u2019'].includes(match[i])) {
+            rawCandidate = match[i];
+            break;
+          }
+        }
+        if (!rawCandidate) rawCandidate = match[2] || match[1] || "";
+        const candidate = rawCandidate.trim().replace(/^[:\s"'“”‘’]+|[:\s"'“”‘’]+$/g, "").trim();
+        if (candidate.length > 1 && !noiseWords.has(candidate.toLowerCase()) && !traps.secretCodes.includes(candidate.toUpperCase())) {
           traps.secretCodes.push(candidate.toUpperCase());
         }
       }
