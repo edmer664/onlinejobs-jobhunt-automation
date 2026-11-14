@@ -87,14 +87,16 @@ Verify every claimed skill, tool, and metric against the candidate's authentic s
 | **Core Skills** | `candidate_skills[*].label` | Do NOT claim unlisted tools (Shopify, HubSpot, QuickBooks, Python). |
 | **Workstation & Specs** | `logistics.hardware`, `logistics.internet`, `logistics.available_hours` | Grounded specs: dedicated workspace, high-speed fiber + backup power/data. |
 
-### 4. Fit Scoring & Go / No-Go Decision
-Calculate candidate suitability:
+### 4. Fit Scoring, Zero-Connect Guardrail & Go / No-Go Decision
+Calculate candidate suitability while strictly enforcing **zero connect points spending**:
 - **Tier 1: Strong Fit (80–100%)** — Core target roles aligned with verified strengths.
-  *Action:* Apply immediately with primary high-converting proposal.
+  *Action:* Apply immediately with primary high-converting proposal via external email (Route A) or external form (Route C).
 - **Tier 2: Good / Transferable Fit (60–79%)** — Operations Assistant, E-commerce Admin, Customer/Inquiry Support.
-  *Action:* Apply highlighting foundational systems (Excel, database management, fast learning).
+  *Action:* Apply highlighting foundational systems (Excel, database management, fast learning) via verified external routes.
 - **Tier 3: Low Fit / Dealbreaker (<60%)** — Senior software developer, CPA/tax lawyer, fluent bilingual Spanish, cold-calling phone sales closer.
-  *Action:* Explicitly advise the user **NOT to apply** to save OLJ application points.
+  *Action:* Explicitly advise the user **NOT to apply** to prevent wasted effort and protect application quotas.
+
+> **ZERO-CONNECT GUARDRAIL:** Never spend paid OnlineJobs.ph connect points. Prioritize direct employer email (Route A) or external application forms (Route C) discovered during the screening trap audit. If a job only allows on-platform applications without external routes, enforce 0 connect points expenditure.
 
 ---
 
@@ -147,6 +149,11 @@ Prevent employer anxiety before they even ask:
 Never demand a job or ask for a long interview:
 - ❌ *"Please review my attached resume and hire me."*
 - ✅ *"Are you open to a quick 10-minute chat or a short sample task this week so I can demonstrate how I work?"*
+
+### Rule 6: Zero Connect Points & External Channel Prioritization (Strict Guardrail)
+- **Zero Connect Points Spending:** Never spend paid OnlineJobs.ph connect points or platform tokens.
+- **External Channel Focus:** Prioritize external email (Route A) and external web/ATS forms (Route C) discovered in the JD text.
+- **Cost Guardrail Enforcement:** If an employer provides direct email or application form URLs, apply via those external channels to spend exactly 0 connect points.
 
 ---
 
@@ -287,12 +294,13 @@ When the user gives you a Job Description to evaluate and generate a proposal fo
 - **Target Role Category:** [e.g., Recruitment Assistant / General VA]
 - **Fit Score:** [e.g., 88% — Strong Fit]
 - **Detected Traps & Screener Codes:** [e.g., Must start with "Sunrise" | Asks for typing speed]
+- **Application Channel & Cost Guardrail:** [e.g., Route A: Direct Email (hiring@company.com) | 0 Connect Points Spent]
 - **Key Client Pain Points:** [1-2 sentences on what the client actually needs solved]
 - **Grounded Match Highlights:** [2-3 verified candidate facts to leverage]
 - **Gaps / Cautions:** [Any missing tool or schedule constraint, and how it is handled]
 
 ### 2. High-Conversion OnlineJobs.ph Proposal
-*(Formatted in clean markdown, ready to copy-paste directly into OnlineJobs.ph)*
+*(Formatted in clean markdown, ready to copy-paste directly into OnlineJobs.ph or external email)*
 
 ---
 
@@ -302,6 +310,8 @@ When the user gives you a Job Description to evaluate and generate a proposal fo
 - [ ] **All screening questions answered?** Are specific questions answered immediately?
 - [ ] **Zero AI cliché openings?** No *"I hope this email finds you well"* or *"I am thrilled to apply"*.
 - [ ] **100% grounded facts?** Every metric, company name, tool, and certification matches `config/profile.yaml`.
+- [ ] **Zero PII?** 100% sanitized with generic candidate placeholders or verified config data; zero ungrounded personal data.
+- [ ] **0 Connect Points Spent?** Enforced zero connect point cost via direct external routes (Route A/C).
 - [ ] **Word count under 250 words?** Can the employer read the entire letter in 45 seconds?
 - [ ] **Timezone and remote specs stated?** Fiber internet, backup data, and hours confirmed.
 - [ ] **Frictionless CTA?** Offers a quick 10-minute chat or short test task.
